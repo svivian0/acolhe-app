@@ -2,11 +2,10 @@
 PORTUGUÊS
 ================================================================================
 
-# Licença
 
 Copyright (c) 2025 Acolhe App
 
-**TODOS OS DIREITOS RESERVADOS.**
+TODOS OS DIREITOS RESERVADOS.
 
 Este software é proprietário e seu código-fonte é disponibilizado nesta plataforma apenas para fins de demonstração e avaliação de portfólio. Nenhuma permissão, expressa ou implícita, é concedida para qualquer outro propósito.
 
@@ -24,11 +23,11 @@ Qualquer uso não autorizado constitui uma violação direta das leis de direito
 ENGLISH
 ================================================================================
 
-# License
+License
 
 Copyright (c) 2025 Acolhe App
 
-**ALL RIGHTS RESERVED.**
+ALL RIGHTS RESERVED.
 
 This software is proprietary, and its source code is made available on this platform for portfolio demonstration and evaluation purposes only. No permission, express or implied, is granted for any other purpose.
 
