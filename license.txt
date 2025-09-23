@@ -1,0 +1,42 @@
+================================================================================
+PORTUGUÊS
+================================================================================
+
+# Licença
+
+Copyright (c) 2025 Acolhe App
+
+**TODOS OS DIREITOS RESERVADOS.**
+
+Este software é proprietário e seu código-fonte é disponibilizado nesta plataforma apenas para fins de demonstração e avaliação de portfólio. Nenhuma permissão, expressa ou implícita, é concedida para qualquer outro propósito.
+
+É estritamente proibido:
+- Usar este código, no todo ou em parte, em qualquer outro projeto, seja ele pessoal, comercial, acadêmico ou de código aberto.
+- Copiar, modificar, distribuir, sublicenciar, vender ou realizar engenharia reversa do código.
+- Remover ou alterar este aviso de direitos autorais.
+
+A visualização e o "fork" do código na plataforma GitHub são permitidos apenas para os fins técnicos da plataforma e não implicam em qualquer direito de uso, modificação ou distribuição.
+
+Qualquer uso não autorizado constitui uma violação direta das leis de direitos autorais e estará sujeito às medidas legais cabíveis.
+
+
+================================================================================
+ENGLISH
+================================================================================
+
+# License
+
+Copyright (c) 2025 Acolhe App
+
+**ALL RIGHTS RESERVED.**
+
+This software is proprietary, and its source code is made available on this platform for portfolio demonstration and evaluation purposes only. No permission, express or implied, is granted for any other purpose.
+
+It is strictly prohibited to:
+- Use this code, in whole or in part, in any other project, whether personal, commercial, academic, or open-source.
+- Copy, modify, distribute, sublicense, sell, or reverse-engineer the code.
+- Remove or alter this copyright notice.
+
+Viewing and forking the code on the GitHub platform are permitted only for the platform's technical purposes and do not imply any right of use, modification, or distribution.
+
+Any unauthorized use constitutes a direct violation of copyright laws and will be subject to legal action.
