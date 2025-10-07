@@ -1,0 +1,16 @@
+#imgestabc{
+    height: 250px;
+    position: relative; top: 25%;
+}
+
+p{
+    font-family: 'inter', sans-serif;
+}
+
+.user{
+    font-family: 'inter', sans-serif;
+}
+
+#NomeLocal{
+    position: relative;
+}
