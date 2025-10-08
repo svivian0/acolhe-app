@@ -87,7 +87,7 @@ a {
     align-items: center;
     background-color: var(--background-color);
     border-radius: 25px; /* Deixa a barra mais arredondada (formato de pílula) */
-    padding: 6px 15px; /* Tamanho vertical diminuído */
+    padding: 6px 8px 6px 15px; /* Padding direito pequeno para o 'x' ficar próximo ao canto */
     min-width: 280px; /* Largura mínima diminuída */
 }
 
@@ -96,7 +96,7 @@ a {
     border: none; /* Remove a borda padrão */
     padding: 0; /* Remove o preenchimento padrão */
     cursor: pointer; /* Mostra o cursor de clique */
-    display: flex; /* Alinha a imagem dentro do botão */
+    display: flex;
     align-items: center;
 }
 
@@ -113,6 +113,7 @@ a {
     background: transparent;
     outline: none;
     color: var(--text-color);
+    flex-grow: 1; /* Faz o input ocupar todo o espaço disponível */
 }
 
 .user-menu {
@@ -137,6 +138,7 @@ a {
     width: 30px; /* Tamanho do ícone de menu aumentado */
     height: 30px;
     vertical-align: middle;
+    transform: translateY(-5px); /* Ajuste fino para alinhar verticalmente com o user-icon */
 }
 
 /* --- NOVO CARROSSEL DE IMAGENS (SLIDER) --- */
@@ -237,28 +239,93 @@ a {
 
 .card {
     flex: 1;
-    height: 200px;
-    background-color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #fff; /* Alterado para branco para melhor contraste */
+    color: var(--text-color);
     border-radius: 8px;
     max-width: 400px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Adiciona uma sombra suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.card-icon {
+    height: 60px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    color: var(--primary-color);
 }
 
 /* --- RODAPÉ (FOOTER) --- */
 .main-footer {
     background-color: var(--primary-color);
-    color: #000; /* Cor do texto alterada para preto */
+    color: #fff; /* Cor do texto alterada para branco */
     padding: 20px 0;
-    text-align: center;
     position: relative;
 }
 
-.social-media {
-    display: inline-flex;
+.footer-content {
+    display: flex;
+    justify-content: space-around;
     align-items: center;
-    font-size: 1.1em;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.social-media .social-icon {
+.footer-left, .footer-center, .footer-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-left p, .footer-right p {
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.footer-left a, .footer-right a {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+}
+
+.footer-left a {
+    color: #000; /* Cor do texto do Instagram para preto */
+    font-weight: bold;
+}
+
+.email-button {
+    background-color: #D9D9D9; /* Cinza fraco/claro */
+    color: #303030; /* Texto cinza esbranquiçado */
+    padding: 8px 16px;
+    border-radius: 20px; /* Deixa o botão mais arredondado (formato pílula) */
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.email-button:hover {
+    background-color: #ffffff; /* Tom mais escuro para o hover */
+}
+
+.footer-logo {
+    height: 80px;
+}
+
+.social-icon {
     width: 24px; /* Define a largura do ícone */
     height: 24px; /* Define a altura do ícone */
     margin-right: 10px;
@@ -314,5 +381,10 @@ a {
         flex-direction: column; /* Empilha os cartões verticalmente */
         align-items: center; /* Centraliza os cartões */
         gap: 20px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
     }
 }
