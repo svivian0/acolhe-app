@@ -1,6 +1,6 @@
 #imgestabc{
     height: 250px;
-    position: relative; top: 25%;
+    position: absolute; top: 20%;
 }
 
 p{
@@ -12,5 +12,5 @@ p{
 }
 
 #NomeLocal{
-    position: relative;
+    position: absolute; top: 27%; left: 18%;
 }
