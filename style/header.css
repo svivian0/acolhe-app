@@ -4,7 +4,7 @@
     justify-content: space-between;
     align-items: center;
     /* padding: 10px 40px; */
-    background-color: #2D5E8E; /* Usa a variável de cor principal */
+    background-color: #5A79AF; /* Usa a variável de cor principal */
     border-bottom: 1px solid var(--light-gray);
     position: absolute; top: 0px; left: 0px;
     width: 100%; /* Necessário para o posicionamento absoluto da barra de pesquisa */
@@ -112,4 +112,14 @@
     width: 30px; /* Tamanho do ícone de menu aumentado */
     height: 30px;
     vertical-align: middle;
+}
+
+#sepvertical{
+    position: absolute; top: 13%; left: 7.3%;
+    height: 70%;
+    width: 2px;
+}
+
+a{
+    text-decoration: none;
 }
