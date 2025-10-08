@@ -15,7 +15,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 40px;
+    padding: 0px 40px;
     background-color: var(--primary-color); /* Usa a variável de cor principal */
     border-bottom: 1px solid var(--light-gray);
     position: relative; /* Necessário para o posicionamento absoluto da barra de pesquisa */
