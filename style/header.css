@@ -1,0 +1,115 @@
+/* --- CABEÇALHO (HEADER) --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 10px 40px; */
+    background-color: #2D5E8E; /* Usa a variável de cor principal */
+    border-bottom: 1px solid var(--light-gray);
+    position: absolute; top: 0px; left: 0px;
+    width: 100%; /* Necessário para o posicionamento absoluto da barra de pesquisa */
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 70px; /* Altura do logo aumentada */
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-nav {
+    margin-left: 30px; /* Espaço entre o logo e o menu */
+}
+
+.main-nav li {
+    margin: 0 20px;
+}
+
+.main-nav a {
+    font-weight: bold;
+    color: #000; /* Cor do texto alterada para preto */
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: var(--highlight-color);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar {
+    position: absolute; /* Posicionamento absoluto para centralização perfeita */
+    left: 50%; /* Move o início da barra para o meio */
+    transform: translateX(-50%); /* Puxa a barra para trás pela metade de sua largura */
+    display: flex;
+    align-items: center;
+    background-color: #D9D9D9;
+    border-radius: 25px; /* Deixa a barra mais arredondada (formato de pílula) */
+    padding: 6px 15px; /* Tamanho vertical diminuído */
+    min-width: 280px; /* Largura mínima diminuída */
+}
+
+.search-button {
+    background: none; /* Remove o fundo padrão do botão */
+    border: none; /* Remove a borda padrão */
+    padding: 0; /* Remove o preenchimento padrão */
+    cursor: pointer; /* Mostra o cursor de clique */
+    display: flex; /* Alinha a imagem dentro do botão */
+    align-items: center;
+}
+
+.search-icon-img {
+    height: 20px; /* Tamanho da imagem da lupa aumentado */
+    width: 20px;
+    margin-right: 8px;
+    opacity: 0.6; /* Deixa o ícone um pouco mais sutil */
+}
+
+.search-bar input {
+    font-size: 1em; /* Aumenta o tamanho da fonte do placeholder */
+    border: none;
+    background: transparent;
+    outline: none;
+    color: var(--text-color);
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+}
+
+.user-menu .icon {
+    font-size: 1.5em;
+    color: #000; /* Cor do ícone alterada para preto */
+    cursor: pointer;
+    margin-left: 15px; /* Espaço entre os ícones diminuído */
+}
+
+.user-icon {
+    width: 30px; /* Largura diminuída para o ícone ficar mais fino */
+    height: 38px; /* Altura ajustada para a nova proporção */
+    vertical-align: middle; /* Alinha verticalmente com outros ícones */
+}
+
+.menu-icon {
+    width: 30px; /* Tamanho do ícone de menu aumentado */
+    height: 30px;
+    vertical-align: middle;
+}
