@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acolhe App - Comércio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="/style/acolhe_app_home_styles.css"
+    />
+    <link rel="stylesheet" href="/style/comercio_styles.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <!-- Container para a parte esquerda do cabeçalho (logo e navegação) -->
+        <div class="header-left">
+            <!-- Container para o logotipo -->
+            <div class="logo-container">
+                <img src="/Imagens/Acolhe_icon.png" alt="Logo Acolhe App" class="logo">
+            </div>
+
+            <!-- Seção de Navegação Principal. -->
+            <nav class="main-nav">
+                <!-- Lista não ordenada que contém os links do menu -->
+                <ul>
+                    <li><a href="acolhe_app_home.html">INÍCIO</a></li>
+                    <li><a href="comercio.html">COMÉRCIO</a></li>
+                    <li><a href="#">SOBRE NÓS</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Container para a parte central do cabeçalho (pesquisa e ícones de usuário) -->
+        <div class="header-center"> 
+            <!-- Barra de pesquisa -->
+            <div class="search-bar">
+                <!-- Ícone de lupa clicável (envolvido por um botão) -->
+                <button class="search-button">
+                    <img src="/Imagens/Lupa.png" alt="Ícone de pesquisa" class="search-icon-img">
+                </button>
+                <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
+                <input type="search" placeholder="Pesquisar">
+            </div>
+
+            <!-- Container para os ícones de usuário -->
+            <div class="header-right">
+                <!-- Menu de usuário com ícones de perfil e opções -->
+                <div class="user-menu">
+                    <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
+                    <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="price-range">
+                    <h3>Filtros</h3>
+                    <div class="price-slider"></div>
+                    <div class="price-labels">
+                        <span>$0</span>
+                        <span>$10000</span>
+                    </div>
+                </div>
+
+                <div class="filter-options">
+                    <div class="filter-grid">
+                        <button class="filter-option">Opção 1</button>
+                        <button class="filter-option">Opção 1</button>
+                        <button class="filter-option">Opção 1</button>
+                        <button class="filter-option">Opção 1</button>
+                        <button class="filter-option">Opção 1</button>
+                        <button class="filter-option">Opção 1</button>
+                    </div>
+                </div>
+
+                <div class="categories">
+                    <h3>Categorias</h3>
+                    <button class="filter-option category-item">Categoria</button>
+                    <button class="filter-option category-item">Categoria</button>
+                    <button class="filter-option category-item">Categoria</button>
+                    <button class="filter-option category-item">Categoria</button>
+                </div>
+
+                <div class="ratings">
+                    <h3>Notas</h3>
+                    <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
+                        <span class="stars">★★★☆☆</span>
+                    </div>
+                    <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
+                        <span class="stars">★★★☆☆</span>
+                    </div>
+                    <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
+                        <span class="stars">★★★☆☆</span>
+                    </div>
+                    <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
+                        <span class="stars">★★★☆☆</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Listings -->
+            <main class="listings">
+                <div class="listing-item">
+                    <img class="listing-image" src="https://via.placeholder.com/120x80?text=Imagem" alt="Imagem do estabelecimento">
+                    <div class="listing-info">
+                        <div class="listing-title">NOME ESTABELECIMENTO</div>
+                        <div class="listing-type">TIPO ESTABELECIMENTO</div>
+                        <div class="listing-stars" aria-label="Avaliação: 4 de 5 estrelas">★★★★☆</div>
+                    </div>
+                </div>
+
+                <div class="listing-item">
+                    <img class="listing-image" src="https://via.placeholder.com/120x80?text=Imagem" alt="Imagem do estabelecimento">
+                    <div class="listing-info">
+                        <div class="listing-title">NOME ESTABELECIMENTO</div>
+                        <div class="listing-type">TIPO ESTABELECIMENTO</div>
+                        <div class="listing-stars" aria-label="Avaliação: 5 de 5 estrelas">★★★★★</div>
+                    </div>
+                </div>
+
+                <div class="listing-item">
+                    <img class="listing-image" src="https://via.placeholder.com/120x80?text=Imagem" alt="Imagem do estabelecimento">
+                    <div class="listing-info">
+                        <div class="listing-title">NOME ESTABELECIMENTO</div>
+                        <div class="listing-type">TIPO ESTABELECIMENTO</div>
+                        <div class="listing-stars" aria-label="Avaliação: 3 de 5 estrelas">★★★☆☆</div>
+                    </div>
+                </div>
+
+                <div class="listing-item">
+                    <img class="listing-image" src="https://via.placeholder.com/120x80?text=Imagem" alt="Imagem do estabelecimento">
+                    <div class="listing-info">
+                        <div class="listing-title">NOME ESTABELECIMENTO</div>
+                        <div class="listing-type">TIPO ESTABELECIMENTO</div>
+                        <div class="listing-stars" aria-label="Avaliação: 4 de 5 estrelas">★★★★☆</div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Highlight -->
+            <aside class="highlight">
+                <h2>DESTAQUE</h2>
+                <img class="highlight-image" src="https://via.placeholder.com/400x200?text=Destaque" alt="Imagem do destaque">
+                <div class="highlight-title">NOME ESTABELECIMENTO</div>
+                <div class="highlight-type">TIPO ESTABELECIMENTO</div>
+                <div class="highlight-stars" aria-label="Avaliação: 3 de 5 estrelas" style="color: var(--star-color);">★★★☆☆</div>
+            </aside>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="main-footer">
+        <!-- Container para o conteúdo do rodapé -->
+        <div class="footer-content">
+            <div class="footer-right">
+                <p>Possui alguma reclamação?</p>
+                <a href="mailto:acolhe.app@gmail.com" class="email-button">
+                    acolhe.app@gmail.com
+                </a>
+            </div>
+            <div class="footer-center">
+                <img src="/Imagens/Acolhe_simbolo.png" alt="Símbolo Acolhe App" class="footer-logo">
+            </div>
+            <div class="footer-left">
+                <p>Nos siga no Instagram</p>
+                <a href="https://www.instagram.com/acolhe_app?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank">
+                    <img src="/Imagens/instagram.png" alt="Ícone do Instagram" class="social-icon">@Acolhe_App
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
