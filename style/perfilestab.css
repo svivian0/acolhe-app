@@ -12,8 +12,32 @@ p{
 }
 
 #NomeLocal{
-    position: absolute; top: 27%; left: 18%;
+    position: absolute; top: 19%; left: 18%;
 }
+
 a{
     font-family: 'inter', sans-serif;
+}
+
+#TipoLocal{
+    position: absolute; top: 25%; left: 18%;
+
+}
+
+.stars {
+    color: #FFD700;
+    margin-right: 10px;
+    font-size: 40px;
+}
+
+#Nota{
+    position: absolute; top: 30%; left: 18%;
+}
+
+.texto{
+    font-family: 'inter', sans-serif;
+}
+
+#descricao{
+    position: absolute; top: 35%; left: 18%;
 }
