@@ -14,3 +14,6 @@ p{
 #NomeLocal{
     position: absolute; top: 27%; left: 18%;
 }
+a{
+    font-family: 'inter', sans-serif;
+}
