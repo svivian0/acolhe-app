@@ -49,6 +49,50 @@ body {
     cursor: pointer;
 }
 
+/* Seção de Pesquisa específica para a página de comércio */
+.search-section {
+    padding: 20px 40px;
+    background-color: #e9eef2; /* Fundo suave para a seção */
+}
+
+.search-bar-comercio {
+    display: flex;
+    align-items: center;
+    background-color: #f4f4f4; /* Cor de fundo da barra */
+    border-radius: 25px;
+    padding: 6px 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: 100%;
+}
+
+.search-bar-comercio .search-button {
+    margin-left: 10px;
+}
+
+.search-bar-comercio .search-icon-img {
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
+    opacity: 0.6;
+}
+
+.search-bar-comercio input {
+    font-size: 1em;
+    border: none;
+    background: transparent;
+    outline: none;
+    flex-grow: 1;
+}
+
+.filter-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
 /* Main Content */
 .main-content {
     display: grid;
