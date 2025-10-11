@@ -56,8 +56,22 @@
             <div class="header-right">
                 <!-- Menu de usuário com ícones de perfil e opções -->
                 <div class="user-menu">
-                    <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
-                    <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
+                    <!-- Ícone de perfil que leva diretamente para a página de perfil -->
+                    <a href="/src/perfilestab.html" aria-label="Ver perfil">
+                        <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
+                    </a>
+                    <!-- Container do menu de usuário para posicionamento do dropdown -->
+                    <div class="user-dropdown-container">
+                        <button id="user-menu-button" class="icon-button" aria-label="Menu de opções" aria-haspopup="true" aria-expanded="false">
+                            <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
+                        </button>
+                        <div id="user-menu-dropdown" class="user-dropdown" role="menu">
+                            <a href="/src/perfilestab.html" class="user-dropdown-item" role="menuitem">Perfil</a>
+                            <a href="#" class="user-dropdown-item" role="menuitem">Configurações</a>
+                            <a href="#" class="user-dropdown-item" role="menuitem">Cadastrar/Login</a>
+                            <a href="#" class="user-dropdown-item" role="menuitem">Sair</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -203,6 +217,27 @@
         // Inicia o carrossel automático quando a página carrega
         goToSlide(0); // Garante que o primeiro slide e indicador estejam ativos
         startSlideShow();
+    </script>
+
+    <!-- Script para controlar o menu dropdown do usuário -->
+    <script>
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
+
+        userMenuButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const isExpanded = userMenuDropdown.classList.toggle('active');
+            userMenuButton.setAttribute('aria-expanded', isExpanded);
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!userMenuDropdown.contains(event.target) && !userMenuButton.contains(event.target)) {
+                if (userMenuDropdown.classList.contains('active')) {
+                    userMenuDropdown.classList.remove('active');
+                    userMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
     </script>
 
 </body>

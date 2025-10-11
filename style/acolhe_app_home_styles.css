@@ -122,6 +122,55 @@ a {
     flex-grow: 1; /* Faz o input ocupar todo o espaço disponível */
 }
 
+/* --- NOVO: Dropdown do Menu de Usuário --- */
+.user-dropdown-container {
+    position: relative; /* Essencial para posicionar o dropdown */
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo para botões que contêm apenas ícones */
+.icon-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-dropdown {
+    display: none; /* Oculto por padrão */
+    position: absolute;
+    top: calc(100% + 15px); /* Posiciona abaixo do ícone com um espaçamento */
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 200; /* Garante que fique acima de outros elementos */
+    width: 180px;
+    overflow: hidden;
+}
+
+.user-dropdown.active {
+    display: block; /* Exibe o menu */
+}
+
+.user-dropdown-item {
+    display: block;
+    padding: 12px 16px;
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.user-dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
 .user-menu {
     display: flex;
     align-items: center;
