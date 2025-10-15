@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- Define a codificação de caracteres para UTF-8, garantindo a exibição correta de acentos e símbolos -->
     <meta charset="UTF-8" />
+    <!-- Configura a viewport para que a página seja responsiva em dispositivos móveis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Título da página exibido na aba do navegador -->
     <title>Acolhe App - Comércio</title>
+    <!-- Pré-conecta aos servidores de fontes do Google para um carregamento mais rápido -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Importa a fonte 'Inter' do Google Fonts com diferentes pesos -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="/style/acolhe_app_home_styles.css"
-    />
+    <!-- Link para a folha de estilos principal, compartilhada com a home -->
+    <link rel="stylesheet" href="/style/acolhe_app_home_styles.css" />
+    <!-- Link para a folha de estilos específica da página de comércio -->
     <link rel="stylesheet" href="/style/comercio_styles.css" />
 </head>
 <body>
@@ -31,67 +35,80 @@
                 <!-- Lista não ordenada que contém os links do menu -->
                 <ul>
                     <li><a href="acolhe_app_home.html">INÍCIO</a></li>
-                    <li><a href="#top">COMÉRCIO</a></li>
+                    <li><a href="comercio.html">COMÉRCIO</a></li>
                     <li><a href="#">SOBRE NÓS</a></li>
                 </ul>
             </nav>
         </div>
 
-        <!-- Container para a parte central do cabeçalho (pesquisa e ícones de usuário) -->
-        <div class="header-center"> 
-            <!-- Barra de pesquisa -->
-            <div class="search-bar">
-                <!-- Ícone de lupa clicável (envolvido por um botão) -->
-                <button class="search-button">
-                    <img src="/Imagens/Lupa.png" alt="Ícone de pesquisa" class="search-icon-img">
-                </button>
-                <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
-                <input type="search" placeholder="Pesquisar">
-            </div>
-
-            <!-- Container para os ícones de usuário -->
-            <div class="header-right">
-                <!-- Menu de usuário com ícones de perfil e opções -->
-                <div class="user-menu">
-                    <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
-                    <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
-                </div>
+        <!-- Container para os ícones de usuário -->
+        <div class="header-right">
+            <!-- Menu de usuário com ícones de perfil e opções -->
+            <div class="user-menu">
+                <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
+                <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
             </div>
         </div>
     </header>
+    <!-- Seção dedicada à barra de pesquisa, com um fundo distinto -->
+    <section class="search-section">
+        <div class="search-bar-comercio">
+            <!-- Botão com o ícone de lupa para iniciar a pesquisa -->
+            <button class="search-button">
+                <img src="/Imagens/Lupa.png" alt="Ícone de pesquisa" class="search-icon-img">
+            </button>
+            <input type="search" placeholder="Pesquisar estabelecimentos...">
+            <!-- Container para o botão de filtro e o menu dropdown -->
+            <div class="filter-container">
+                <button class="filter-button" id="filter-toggle-button" aria-label="Filtros" aria-haspopup="true" aria-expanded="false">
+                    <img src="/Imagens/Filtros.png" alt="Ícone de filtros" class="filter-icon-img">
+                </button>
+                <!-- Caixa de opções de filtro (inicialmente oculta) -->
+                <div class="filter-dropdown" id="filter-dropdown-box" role="menu">
+                    <a href="#" class="filter-dropdown-item" role="menuitem">Melhores Avaliados</a>
+                    <a href="#" class="filter-dropdown-item" role="menuitem">Piores Avaliados</a>
+                    <a href="#" class="filter-dropdown-item" role="menuitem">Categoria</a>
+                    <a href="#" class="filter-dropdown-item" role="menuitem">Nota</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Container principal que envolve o conteúdo da página (filtros, listagens, destaque) -->
     <div class="container">
-        <!-- Main Content -->
+        <!-- Conteúdo principal organizado em um layout de grade -->
         <div class="main-content">
-            <!-- Sidebar -->
+            <!-- Barra lateral (esquerda) para os filtros de pesquisa -->
             <aside class="sidebar">
-                <div class="price-range">
-                    <h3>Filtros</h3>
-                    <div class="price-slider"></div>
-                    <div class="price-labels">
-                        <span>$0</span>
-                        <span>$10000</span>
+                <!-- Seção de filtro por localização -->
+                <div class="location-filter">
+                    <h3>Qual sua localização?</h3>
+                    <div class="cep-search-bar">
+                        <img src="/Imagens/Lupa.png" alt="Ícone de lupa" class="cep-search-icon">
+                        <input type="text" placeholder="Digite seu CEP" />
                     </div>
                 </div>
-
+                <!-- Seção de filtros com opções em botões -->
                 <div class="filter-options">
                     <div class="filter-grid">
-                        <button class="filter-option">Opção 1</button>
-                        <button class="filter-option">Opção 1</button>
-                        <button class="filter-option">Opção 1</button>
-                        <button class="filter-option">Opção 1</button>
-                        <button class="filter-option">Opção 1</button>
-                        <button class="filter-option">Opção 1</button>
+                        <button class="filter-option">Restaurante</button>
+                        <button class="filter-option">Lancheria</button>
+                        <button class="filter-option">Barbearia</button>
+                        <button class="filter-option">Shopping</button>
+                        <button class="filter-option">Cinema</button>
+                        <button class="filter-option">Hoteis</button>
                     </div>
                 </div>
 
+                <!-- Seção de filtros por categorias -->
                 <div class="categories">
                     <h3>Categorias</h3>
-                    <button class="filter-option category-item">Categoria</button>
-                    <button class="filter-option category-item">Categoria</button>
-                    <button class="filter-option category-item">Categoria</button>
-                    <button class="filter-option category-item">Categoria</button>
+                    <button class="filter-option category-item">Serviços</button>
+                    <button class="filter-option category-item">Turismo</button>
+                    <button class="filter-option category-item">Estabelecimentos</button>
+                    <button class="filter-option category-item">Outros</button>
                 </div>
 
+                <!-- Seção de filtros por avaliação (estrelas) -->
                 <div class="ratings">
                     <h3>Notas</h3>
                     <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
@@ -109,56 +126,57 @@
                 </div>
             </aside>
 
-            <!-- Listings -->
+            <!-- Seção principal (centro) que exibe a lista de estabelecimentos -->
             <main class="listings">
+                <!-- Item individual na lista de estabelecimentos -->
                 <div class="listing-item">
-                    <img class="listing-image" src="https://via.placeholder.com/120x80?text=Imagem" alt="Imagem do estabelecimento">
+                    <img class="listing-image" src="/Imagens/cafeshop.jpeg" alt="Imagem do estabelecimento">
                     <div class="listing-info">
-                        <div class="listing-title">NOME ESTABELECIMENTO</div>
-                        <div class="listing-type">TIPO ESTABELECIMENTO</div>
+                        <div class="listing-title">Quiero café</div>
+                        <div class="listing-type">Cafeteria</div>
                         <div class="listing-stars" aria-label="Avaliação: 4 de 5 estrelas">★★★★☆</div>
                     </div>
                 </div>
 
                 <div class="listing-item">
-                    <img class="listing-image" src="https://via.placeholder.com/120x80?text=Imagem" alt="Imagem do estabelecimento">
+                    <img class="listing-image" src="/Imagens/restaurante.jpeg" alt="Imagem do estabelecimento">
                     <div class="listing-info">
-                        <div class="listing-title">NOME ESTABELECIMENTO</div>
-                        <div class="listing-type">TIPO ESTABELECIMENTO</div>
+                        <div class="listing-title">Ristorant</div>
+                        <div class="listing-type">Restaurante</div>
                         <div class="listing-stars" aria-label="Avaliação: 5 de 5 estrelas">★★★★★</div>
                     </div>
                 </div>
 
                 <div class="listing-item">
-                    <img class="listing-image" src="https://via.placeholder.com/120x80?text=Imagem" alt="Imagem do estabelecimento">
+                    <img class="listing-image" src="/Imagens/bakery.jpeg" alt="Imagem do estabelecimento">
                     <div class="listing-info">
-                        <div class="listing-title">NOME ESTABELECIMENTO</div>
-                        <div class="listing-type">TIPO ESTABELECIMENTO</div>
+                        <div class="listing-title">Bakery Cafe</div>
+                        <div class="listing-type">Cafeteria</div>
                         <div class="listing-stars" aria-label="Avaliação: 3 de 5 estrelas">★★★☆☆</div>
                     </div>
                 </div>
 
                 <div class="listing-item">
-                    <img class="listing-image" src="https://via.placeholder.com/120x80?text=Imagem" alt="Imagem do estabelecimento">
+                    <img class="listing-image" src="/Imagens/coffeshopP.jpeg" alt="Imagem do estabelecimento">
                     <div class="listing-info">
-                        <div class="listing-title">NOME ESTABELECIMENTO</div>
-                        <div class="listing-type">TIPO ESTABELECIMENTO</div>
+                        <div class="listing-title">Café shop</div>
+                        <div class="listing-type">Cafeteria</div>
                         <div class="listing-stars" aria-label="Avaliação: 4 de 5 estrelas">★★★★☆</div>
                     </div>
                 </div>
             </main>
 
-            <!-- Highlight -->
+            <!-- Barra lateral (direita) para exibir um estabelecimento em destaque -->
             <aside class="highlight">
                 <h2>DESTAQUE</h2>
-                <img class="highlight-image" src="https://via.placeholder.com/400x200?text=Destaque" alt="Imagem do destaque">
-                <div class="highlight-title">NOME ESTABELECIMENTO</div>
-                <div class="highlight-type">TIPO ESTABELECIMENTO</div>
+                <img class="highlight-image" src="/Imagens/bakery.jpeg" alt="Imagem do destaque">
+                <div class="highlight-title">Ristorant</div>
+                <div class="highlight-type">Restaurante</div>
                 <div class="highlight-stars" aria-label="Avaliação: 3 de 5 estrelas" style="color: var(--star-color);">★★★☆☆</div>
             </aside>
         </div>
     </div>
-    <!-- Footer -->
+    <!-- Rodapé da página, reutilizado de outras páginas -->
     <footer class="main-footer">
         <!-- Container para o conteúdo do rodapé -->
         <div class="footer-content">
@@ -179,5 +197,33 @@
             </div>
         </div>
     </footer>
+
+    <!-- Script para controlar o menu dropdown do filtro -->
+    <script>
+        // Seleciona o botão de filtro e a caixa de dropdown
+        const filterButton = document.getElementById('filter-toggle-button');
+        const filterDropdown = document.getElementById('filter-dropdown-box');
+
+        // Adiciona um evento de clique ao botão
+        filterButton.addEventListener('click', (event) => {
+            // Impede que o clique no botão feche o menu imediatamente (caso o evento se propague para o document)
+            event.stopPropagation();
+            // Alterna a classe 'active' para mostrar ou esconder o dropdown
+            filterDropdown.classList.toggle('active');
+            // Atualiza o atributo aria-expanded para acessibilidade
+            const isExpanded = filterDropdown.classList.contains('active');
+            filterButton.setAttribute('aria-expanded', isExpanded);
+        });
+
+        // Adiciona um evento de clique ao documento inteiro para fechar o dropdown
+        document.addEventListener('click', (event) => {
+            // Verifica se o clique foi fora do dropdown e do botão
+            if (!filterDropdown.contains(event.target) && !filterButton.contains(event.target)) {
+                // Remove a classe 'active' para esconder o dropdown
+                filterDropdown.classList.remove('active');
+                filterButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
 </body>
 </html>

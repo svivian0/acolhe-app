@@ -1,9 +1,11 @@
+/* --- RESET E CONFIGURAÇÕES GLOBAIS --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Variáveis de cor específicas para a página de comércio */
 :root {
     --gradient-start: #2D5E8E; /* Azul */
     --gradient-end: #00C853;   /* Verde */
@@ -14,6 +16,7 @@
     --star-color: #FFD700;
 }
 
+/* Estilos base para o corpo da página */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     /* background-color: white; */ /* Removido para usar a cor do CSS principal */
@@ -21,6 +24,7 @@ body {
     color: var(--text-primary);
 }
 
+/* Container principal para limitar a largura do conteúdo e centralizá-lo */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -28,6 +32,7 @@ body {
     width: 100%;
 }
 
+/* Estilos para ícones (remanescentes de uma versão anterior, podem ser ajustados/removidos) */
 .user-icon {
     background: transparent;
     border: none;
@@ -35,6 +40,7 @@ body {
     padding: 0;
 }
 
+/* Estilo para o ícone de filtro na barra de pesquisa (versão anterior) */
 .filter-icon {
     position: absolute;
     right: 20px;
@@ -49,15 +55,104 @@ body {
     cursor: pointer;
 }
 
-/* Main Content */
+/* --- SEÇÃO DE PESQUISA --- */
+.search-section {
+    padding: 20px 40px;
+    background-color: #e9eef2; /* Fundo suave para a seção */
+}
+
+/* Estilo da barra de pesquisa específica da página de comércio */
+.search-bar-comercio {
+    display: flex;
+    align-items: center;
+    background-color: #f4f4f4; /* Cor de fundo da barra */
+    border-radius: 25px;
+    padding: 6px 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: 100%;
+}
+
+/* Ajuste de margem para o botão de pesquisa */
+.search-bar-comercio .search-button {
+    margin-left: 10px;
+}
+
+/* Estilo para a imagem do ícone de lupa */
+.search-bar-comercio .search-icon-img {
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
+    opacity: 0.6;
+}
+
+/* Estilo para o campo de input da pesquisa */
+.search-bar-comercio input {
+    font-size: 1em;
+    border: none;
+    background: transparent;
+    outline: none;
+    flex-grow: 1;
+}
+
+/* Estilo para o botão de filtro */
+.filter-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+/* --- Dropdown de Filtro --- */
+.filter-container {
+    position: relative; /* Necessário para posicionar o dropdown */
+    display: flex;
+    align-items: center;
+}
+
+.filter-dropdown {
+    display: none; /* Oculto por padrão */
+    position: absolute;
+    top: 100%; /* Posiciona abaixo do botão */
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 100;
+    width: 200px; /* Largura do dropdown */
+    margin-top: 8px; /* Espaço entre o botão e o dropdown */
+    overflow: hidden;
+}
+
+.filter-dropdown.active {
+    display: block; /* Mostra o dropdown quando a classe 'active' está presente */
+}
+
+.filter-dropdown-item {
+    display: block;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.filter-dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+
+/* --- CONTEÚDO PRINCIPAL (GRID LAYOUT) --- */
 .main-content {
     display: grid;
-    grid-template-columns: 300px 1fr 400px;
+    grid-template-columns: 300px 1fr 400px; /* Layout de 3 colunas: sidebar, listagem, destaque */
     margin-top: 30px; /* Adiciona espaço no topo */
     gap: 30px;
 }
 
-/* Sidebar */
+/* --- SIDEBAR DE FILTROS (ESQUERDA) --- */
 .sidebar {
     background: #f0f0f0;
     border-radius: 15px;
@@ -65,6 +160,7 @@ body {
     height: fit-content;
 }
 
+/* Título dentro da sidebar */
 .sidebar h3 {
     margin-bottom: 15px;
     color: var(--text-primary);
@@ -72,10 +168,12 @@ body {
     font-weight: 600;
 }
 
+/* Filtro de faixa de preço */
 .price-range {
     margin-bottom: 30px;
 }
 
+/* Barra deslizante (slider) de preço */
 .price-slider {
     width: 100%;
     height: 5px;
@@ -86,6 +184,7 @@ body {
     position: relative;
 }
 
+/* Preenchimento do slider (simula o valor selecionado) */
 .price-slider::before {
     content: '';
     position: absolute;
@@ -97,6 +196,7 @@ body {
     border-radius: 5px;
 }
 
+/* "Puxador" do slider (simula o controle) */
 .price-slider::after {
     content: '';
     position: absolute;
@@ -110,6 +210,7 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
+/* Rótulos de valor mínimo e máximo do slider */
 .price-labels {
     display: flex;
     justify-content: space-between;
@@ -118,10 +219,49 @@ body {
     font-weight: 500;
 }
 
+/* --- Filtro de Localização (CEP) --- */
+.location-filter {
+    margin-bottom: 30px;
+}
+
+.cep-search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 20px; /* Deixa mais arredondado */
+    padding: 6px 12px; /* Ajusta o padding */
+    margin-top: 10px;
+}
+
+/* Novo: Estilo para o ícone de lupa na barra de CEP */
+.cep-search-icon {
+    height: 16px;
+    width: 16px;
+    opacity: 0.5;
+    margin-right: 8px;
+}
+
+.cep-search-bar input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 4px; /* Diminui o padding interno */
+    font-size: 13px; /* Diminui a fonte */
+    background: transparent;
+}
+
+/* Removido o botão, não é mais necessário */
+.cep-search-bar button {
+    display: none; 
+}
+
+/* Container para os botões de filtro */
 .filter-options {
     margin-bottom: 30px;
 }
 
+/* Grade para organizar os botões de filtro */
 .filter-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -129,6 +269,7 @@ body {
     margin-bottom: 20px;
 }
 
+/* Estilo individual dos botões de filtro */
 .filter-option {
     padding: 8px 12px;
     background: #f5f5f5;
@@ -146,10 +287,12 @@ body {
     transform: translateY(-1px);
 }
 
+/* Seção de categorias */
 .categories {
     margin-bottom: 30px;
 }
 
+/* Botão de item de categoria */
 .category-item {
     display: block;
     width: 100%;
@@ -167,10 +310,12 @@ body {
     transform: translateX(5px);
 }
 
+/* Seção de avaliações (estrelas) */
 .ratings {
     margin-bottom: 20px;
 }
 
+/* Item de avaliação clicável */
 .rating-item {
     display: flex;
     align-items: center;
@@ -183,19 +328,21 @@ body {
     transform: translateX(3px);
 }
 
+/* Estilo para as estrelas */
 .stars {
     color: var(--star-color);
     margin-right: 10px;
     font-size: 16px;
 }
 
-/* Listings */
+/* --- LISTAGEM DE ESTABELECIMENTOS (CENTRO) --- */
 .listings {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     padding: 20px;
 }
 
+/* Item individual na lista */
 .listing-item {
     display: flex;
     gap: 15px;
@@ -218,6 +365,7 @@ body {
     margin-bottom: 0;
 }
 
+/* Imagem do estabelecimento na lista */
 .listing-image {
     width: 120px;
     height: 80px;
@@ -227,10 +375,12 @@ body {
     flex-shrink: 0;
 }
 
+/* Informações do estabelecimento (título, tipo, estrelas) */
 .listing-info {
     flex: 1;
 }
 
+/* Título do estabelecimento */
 .listing-title {
     color: #7B83FF;
     font-weight: 600;
@@ -238,6 +388,7 @@ body {
     font-size: 16px;
 }
 
+/* Tipo do estabelecimento */
 .listing-type {
     color: #7B83FF;
     font-size: 14px;
@@ -245,12 +396,13 @@ body {
     font-weight: 400;
 }
 
+/* Estrelas de avaliação do estabelecimento */
 .listing-stars {
     color: var(--star-color);
     font-size: 16px;
 }
 
-/* Highlight Card */
+/* --- CARD DE DESTAQUE (DIREITA) --- */
 .highlight {
     background: var(--gradient-start);
     border-radius: 15px;
@@ -259,12 +411,14 @@ body {
     height: fit-content;
 }
 
+/* Título principal do card de destaque */
 .highlight h2 {
     font-size: 32px;
     font-weight: 700;
     margin-bottom: 20px;
 }
 
+/* Imagem do estabelecimento em destaque */
 .highlight-image {
     width: 100%;
     height: 200px;
@@ -274,12 +428,14 @@ body {
     object-fit: cover;
 }
 
+/* Título do estabelecimento em destaque */
 .highlight-title {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
 }
 
+/* Tipo do estabelecimento em destaque */
 .highlight-type {
     font-size: 14px;
     margin-bottom: 15px;
@@ -287,12 +443,13 @@ body {
     font-weight: 400;
 }
 
+/* Estrelas do estabelecimento em destaque */
 .highlight-stars {
     color: var(--star-color);
     font-size: 18px;
 }
 
-/* Responsive Design */
+/* --- DESIGN RESPONSIVO --- */
 @media (max-width: 1200px) {
     .container {
         padding: 15px;
@@ -304,6 +461,7 @@ body {
     }
 }
 
+/* Para tablets e telas menores */
 @media (max-width: 1024px) {
     .main-content {
         grid-template-columns: 1fr 1fr;
@@ -332,6 +490,7 @@ body {
     }
 }
 
+/* Para celulares */
 @media (max-width: 768px) {
     .container {
         padding: 10px;

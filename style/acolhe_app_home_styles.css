@@ -107,6 +107,12 @@ a {
     opacity: 0.6; /* Deixa o ícone um pouco mais sutil */
 }
 
+/* Adicionado para o ícone de filtro na página de comércio */
+.filter-icon-img {
+    height: 20px;
+    width: 20px;
+}
+
 .search-bar input {
     font-size: 1em; /* Aumenta o tamanho da fonte do placeholder */
     border: none;
