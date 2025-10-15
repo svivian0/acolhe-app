@@ -1,5 +1,6 @@
 /* Adiciona um espaçamento do topo para o corpo da página, para não ficar colado no header */
 body {
+    margin: 0; /* Remove a margem padrão do navegador */
     padding-top: 120px; 
 }
 
@@ -133,4 +134,122 @@ a{
     margin: 0;
     line-height: 1.5;
     color: #445;
+}
+
+/* --- RODAPÉ --- */
+.rodape {
+    background-color: #102c47; /* Cor primária do app para consistência */
+    color: #ffffff; /* Cor do texto branco */
+    padding: 30px 20px;
+    margin-top: 40px; /* Adiciona um espaço entre o conteúdo e o rodapé */
+}
+
+.rodape-container {
+    display: flex;
+    justify-content: space-between; /* Alinha os itens nas extremidades e centro */
+    align-items: center; /* Centraliza verticalmente */
+    max-width: 1200px; /* Largura máxima do conteúdo */
+    margin: 0 auto; /* Centraliza o container na tela */
+    text-align: center;
+    gap: 20px; /* Espaço entre os itens */
+}
+
+.rodape-item {
+    flex: 1; /* Permite que os itens cresçam e encolham igualmente */
+}
+
+/* Estilos para a seção de Reclamação */
+.reclamacao p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.email-link {
+    display: inline-block;
+    background-color: #f4f4f4; /* Cor de fundo clara para contraste */
+    color: #333; /* Cor do texto escura */
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.email-link:hover, .instagram-link:hover {
+    background-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Estilos para a seção do Instagram */
+.instagram p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.instagram-link {
+    display: inline-block;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+/* Estilos para o Logo */
+.logo-imagem {
+    max-width: 100px; /* Tamanho ajustado para o novo layout */
+    height: auto;
+}
+
+/* --- DESIGN RESPONSIVO (MOBILE) --- */
+
+/* Para tablets e celulares (telas de até 768px de largura) */
+@media (max-width: 768px) {
+    body {
+        /* Reduz o espaçamento do topo se o header ficar menor em mobile */
+        padding-top: 100px; 
+    }
+
+    /* Faz a imagem e as informações ficarem empilhadas verticalmente */
+    .user {
+        flex-direction: column;
+        align-items: center; /* Centraliza os itens */
+        text-align: center;  /* Centraliza o texto dentro dos itens */
+        gap: 20px;
+        padding: 15px;
+    }
+
+    /* A imagem do estabelecimento ocupa a largura total */
+    #imgestabc {
+        width: 100%;
+        height: 220px;
+    }
+
+    /* Reduz o tamanho das fontes para caber melhor na tela */
+    #NomeLocal {
+        font-size: 2em;
+    }
+
+    #TipoLocal {
+        font-size: 1.3em;
+    }
+
+    .stars {
+        font-size: 32px;
+    }
+
+    /* Ajusta o padding da seção de comentários */
+    .coment {
+        padding: 15px;
+    }
+
+    /* Responsividade do Rodapé */
+    .rodape-container {
+        flex-direction: column; /* Empilha os itens verticalmente */
+        gap: 30px; /* Aumenta o espaço entre os itens empilhados */
+    }
+
+    .rodape-item.logo {
+        order: -1; /* Move o logo para o topo no mobile */
+    }
 }
