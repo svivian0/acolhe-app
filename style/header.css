@@ -17,9 +17,13 @@
     align-items: center;
     padding: 10px 40px;
     background-color: var(--primary-color); /* Usa a variável de cor principal */
-    /* border-bottom: 1px solid var(--light-gray); */
-    position: absolute; top: 0px; left: 0px;
-    width: 97%; /* Necessário para o posicionamento absoluto da barra de pesquisa */
+    border-bottom: 1px solid var(--light-gray);
+    position: fixed; /* Alterado para fixed para manter no topo */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupa toda a largura */
+    z-index: 1000; /* Garante que o header fique sobre outros elementos */
+    box-sizing: border-box; /* Garante que padding não aumente a largura total */
 }
 
 .header-left {
@@ -53,7 +57,7 @@
 
 .main-nav a {
     font-weight: bold;
-    color: #000; /* Cor do texto alterada para preto */
+    color: #000; /* Cor do texto revertida para preto */
     transition: color 0.3s ease;
 }
 
@@ -104,7 +108,7 @@
 }
 
 .user-menu {
-    display: flex;
+    display:flex;
     align-items: center;
 }
 
@@ -126,14 +130,4 @@
     height: 30px;
     vertical-align: middle;
     transform: translateY(-5px); /* Ajuste fino para alinhar verticalmente com o user-icon */
-}
-
-#sepvertical{
-    position: absolute; top: 13%; left: 7.3%;
-    height: 70%;
-    width: 2px;
-}
-
-a{
-    text-decoration: none;
 }

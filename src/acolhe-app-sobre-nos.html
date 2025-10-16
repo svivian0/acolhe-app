@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/header.css">
+    <link rel="stylesheet" href="/style/sobre-nos.css">
+    <link rel="stylesheet" href="/style/acolhe_app_home_styles.css">
+    <title>Sobre Nós - Acolhe App</title>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <!-- Container para a parte esquerda do cabeçalho (logo e navegação) -->
+        <div class="header-left">
+            <!-- Container para o logotipo -->
+            <div class="logo-container">
+                <img src="/Imagens/Acolhe_icon.png" alt="Logo Acolhe App" class="logo">
+            </div>
+ 
+            <!-- Seção de Navegação Principal. -->
+            <nav class="main-nav">
+                <!-- Lista não ordenada que contém os links do menu -->
+                <ul>
+                    <li><a href="/src/acolhe_app_home.html">INÍCIO</a></li>
+                    <li><a href="/src/comercio.html">COMÉRCIO</a></li>
+                    <li><a href="/src/acolhe-app-sobre-nos.html">SOBRE NÓS</a></li>
+                </ul>
+            </nav>
+        </div>
+ 
+        <!-- Container para a parte central do cabeçalho (pesquisa e ícones de usuário) -->
+        <div class="header-center"> 
+            <!-- Barra de pesquisa -->
+            <div class="search-bar">
+                <!-- Ícone de lupa clicável (envolvido por um botão) -->
+                <button class="search-button">
+                    <img src="/Imagens/Lupa.png" alt="Ícone de pesquisa" class="search-icon-img">
+                </button>
+                <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
+                <input type="search" placeholder="Pesquisar">
+            </div>
+ 
+            <!-- Container para os ícones de usuário -->
+            <div class="header-right">
+                <!-- Menu de usuário com ícones de perfil e opções -->
+                <div class="user-menu">
+                    <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
+                    <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Image Section -->
+        <section class="hero-image">
+            <img style="width: 1100px; border-radius: 25px;" src="/Imagens/equipeacolhe.jpeg">
+        </section>
+
+        <!-- Cards Section -->
+        <section class="cards-container">
+            <div class="card">
+                <h3>Nossa Missão</h3>
+                <p>Conectar pessoas neurodivergentes e suas famílias a estabelecimentos comerciais, de serviços e turismo que ofereçam ambientes acolhedores, seguros e com poucos estímulos, promovendo a inclusão e uma experiência positiva para todos.</p>
+            </div>
+            <div class="card">
+                <h3>Nossos valores</h3>
+                <p>Promovemos a inclusão de pessoas neurodivergentes, garantindo acolhimento em ambientes seguros e tranquilos, buscando a acessibilidade a serviços e espaços adaptados, contribuindo para o Bem-estar das famílias atípicas e aumentando a colaboração com parceiros que compartilham nosso compromisso com a neurodiversidade.</p>
+            </div>
+            <div class="card">
+                <h3>Nossa visão</h3>
+                <p>Ser a principal plataforma que impulsiona o comércio e o turismo inclusivo, tornando os ambientes sociais mais preparados e acolhedores para pessoas neurodivergentes, fortalecendo a imagem social das empresas e estimulando o turismo acessível em diversas regiões.</p>
+            </div>
+        </section>
+
+        <!-- Separator Line -->
+        <div class="separator"></div>
+
+        <!-- Team Photo Section -->
+        <section class="team-section">
+            <div class="team-photo">
+                <iframe 
+                    width="100%" 
+                    height="450" 
+                    src="https://www.youtube.com/embed/8CtS-ePr44o" 
+                    title="YouTube video player" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius: 15px;"></iframe>
+            </div>
+        </section>
+
+        <!-- Separator Line -->
+        <div class="separator"></div>
+
+        <!-- Reviews Section -->
+        <section class="reviews-section">
+            <h2 class="reviews-title">Avaliações de Nossos Usuários</h2>
+            <div class="reviews-content">
+                <div class="review-text">
+                    <p style="text-align: justify;" >Cada avaliação publicada representa uma experiência real de quem visitou e testou um espaço. Essas informações ajudam outras famílias a fazer escolhas mais seguras e conscientes sobre os locais que frequentam, reduzindo incertezas e tornando os momentos fora de casa mais tranquilos.
+                    A proposta é formar uma rede de apoio construída de maneira coletiva e acessível. Quando alguém compartilha sua vivência, contribui diretamente para que outras pessoas encontrem locais adequados e inclusivos. Assim, juntos, fortalecemos a troca de experiências e incentivamos estabelecimentos a manter ambientes cada vez mais preparados.</p>
+                </div>
+                <div class="review-image-container">
+                    <div class="review-image">
+                        <img style="width: 230px; border-radius: 15px;" src="/Imagens/familiafeliz.png">
+                    </div>
+                    <div class="contact-section">
+                        <div class="contact-title">ENVIE SUA AVALIAÇÃO!</div>
+                        <div class="contact-email">
+                            <div class="email-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                            </div>
+                            <span>AcolheApp@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <!-- Container para o conteúdo do rodapé -->
+        <div class="footer-content">
+            <div class="footer-right">
+                <p>Possui alguma reclamação?</p>
+                <a href="mailto:acolhe.app@gmail.com" class="email-button">
+                    acolhe.app@gmail.com
+                </a>
+            </div>
+            <div class="footer-center">
+                <img src="/Imagens/Acolhe_simbolo.png" alt="Símbolo Acolhe App" class="footer-logo">
+            </div>
+            <div class="footer-left">
+                <p>Nos siga no Instagram</p>
+                <a href="https://www.instagram.com/acolhe_app?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank">
+                    <img src="/Imagens/instagram.png" alt="Ícone do Instagram" class="social-icon">@Acolhe_App
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
