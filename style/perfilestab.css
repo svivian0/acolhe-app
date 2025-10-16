@@ -44,6 +44,7 @@ p{
 
 a{
     font-family: 'inter', sans-serif;
+    text-decoration: none;
 }
 
 #TipoLocal {
