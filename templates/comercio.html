@@ -15,10 +15,9 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Link para a folha de estilos principal, compartilhada com a home -->
-    <link rel="stylesheet" href="/style/acolhe_app_home_styles.css" />
-    <!-- Link para a folha de estilos específica da página de comércio -->
-    <link rel="stylesheet" href="/style/comercio_styles.css" />
+    <!-- Links para as folhas de estilo usando url_for -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/acolhe_app_home_styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/comercio_styles.css') }}" />
 </head>
 <body>
     <!-- Header -->
@@ -27,26 +26,46 @@
         <div class="header-left">
             <!-- Container para o logotipo -->
             <div class="logo-container">
-                <img src="/Imagens/Acolhe_icon.png" alt="Logo Acolhe App" class="logo">
+                <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="logo">
             </div>
 
             <!-- Seção de Navegação Principal. -->
             <nav class="main-nav">
                 <!-- Lista não ordenada que contém os links do menu -->
                 <ul>
-                    <li><a href="acolhe_app_home.html">INÍCIO</a></li>
-                    <li><a href="comercio.html">COMÉRCIO</a></li>
-                    <li><a href="acolhe-app-sobre-nos.html">SOBRE NÓS</a></li>
+                    <li><a href="{{ url_for('home') }}">INÍCIO</a></li>
+                    <li><a href="{{ url_for('comercio') }}">COMÉRCIO</a></li>
+                    <li><a href="{{ url_for('sobre_nos') }}">SOBRE NÓS</a></li>
                 </ul>
             </nav>
         </div>
 
-        <!-- Container para os ícones de usuário -->
+        <!-- Container para a parte direita do cabeçalho (ícones de usuário) -->
         <div class="header-right">
             <!-- Menu de usuário com ícones de perfil e opções -->
             <div class="user-menu">
-                <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
-                <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
+                <!-- Ícone de perfil que leva para a página de login se não estiver logado -->
+                <a href="{{ url_for('login') }}" aria-label="Login ou Perfil">
+                    <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
+                </a>
+                <!-- Container do menu de usuário para posicionamento do dropdown -->
+                <div class="user-dropdown-container">
+                    <button id="user-menu-button" class="icon-button" aria-label="Menu de opções" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
+                    </button>
+                    <div id="user-menu-dropdown" class="user-dropdown" role="menu">
+                        {% if current_user.is_authenticated %}
+                            <!-- Links para usuários LOGADOS -->
+                            <a href="#" class="user-dropdown-item" role="menuitem">Olá, {{ current_user.nome }}!</a>
+                            <a href="#" class="user-dropdown-item" role="menuitem">Meu Perfil</a>
+                            <a href="{{ url_for('logout') }}" class="user-dropdown-item" role="menuitem">Sair</a>
+                        {% else %}
+                            <!-- Links para VISITANTES (não logados) -->
+                            <a href="{{ url_for('login') }}" class="user-dropdown-item" role="menuitem">Login</a>
+                            <a href="{{ url_for('cadastro_html') }}" class="user-dropdown-item" role="menuitem">Cadastrar</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -55,13 +74,13 @@
         <div class="search-bar-comercio">
             <!-- Botão com o ícone de lupa para iniciar a pesquisa -->
             <button class="search-button">
-                <img src="/Imagens/Lupa.png" alt="Ícone de pesquisa" class="search-icon-img">
+                <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
             </button>
             <input type="search" placeholder="Pesquisar estabelecimentos...">
             <!-- Container para o botão de filtro e o menu dropdown -->
             <div class="filter-container">
                 <button class="filter-button" id="filter-toggle-button" aria-label="Filtros" aria-haspopup="true" aria-expanded="false">
-                    <img src="/Imagens/Filtros.png" alt="Ícone de filtros" class="filter-icon-img">
+                    <img src="{{ url_for('static', filename='images/Filtros.png') }}" alt="Ícone de filtros" class="filter-icon-img">
                 </button>
                 <!-- Caixa de opções de filtro (inicialmente oculta) -->
                 <div class="filter-dropdown" id="filter-dropdown-box" role="menu">
@@ -83,7 +102,7 @@
                 <div class="location-filter">
                     <h3>Qual sua localização?</h3>
                     <div class="cep-search-bar">
-                        <img src="/Imagens/Lupa.png" alt="Ícone de lupa" class="cep-search-icon">
+                        <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de lupa" class="cep-search-icon">
                         <input type="text" placeholder="Digite seu CEP" />
                     </div>
                 </div>
@@ -128,50 +147,35 @@
 
             <!-- Seção principal (centro) que exibe a lista de estabelecimentos -->
             <main class="listings">
-                <!-- Item individual na lista de estabelecimentos -->
-                <div class="listing-item">
-                    <img class="listing-image" src="/Imagens/cafeshop.jpeg" alt="Imagem do estabelecimento">
-                    <div class="listing-info">
-                        <div class="listing-title">
-                            <a href="/src/perfilestab.html">Quiero</a>
+                {% if estabelecimentos %}
+                    {% for estabelecimento in estabelecimentos %}
+                    <!-- Item individual na lista de estabelecimentos -->
+                    <div class="listing-item">
+                        <!-- A imagem e o título agora são um link para o perfil do estabelecimento -->
+                        <a href="{{ url_for('perfil_estabelecimento', id=estabelecimento.id_estabelecimento) }}">
+                            <!-- Usa a imagem do perfil do estabelecimento ou uma imagem padrão se não houver -->
+                            <img class="listing-image" src="{{ url_for('static', filename='images/' + (estabelecimento.imagemperfilestab or 'placeholder.png')) }}" alt="Imagem de {{ estabelecimento.nome }}">
+                        </a>
+                        <div class="listing-info">
+                            <div class="listing-title">
+                                <a href="{{ url_for('perfil_estabelecimento', id=estabelecimento.id_estabelecimento) }}">{{ estabelecimento.nome }}</a>
+                            </div>
+                            <!-- Exibe a média de avaliação numérica. A conversão para estrelas pode ser feita depois. -->
+                            <div class="listing-stars" aria-label="Avaliação: {{ estabelecimento.media_avaliacao }} de 5 estrelas">
+                                Nota: {{ "%.1f"|format(estabelecimento.media_avaliacao) }} / 5.0
+                            </div>
                         </div>
-                        <div class="listing-type">Cafeteria</div>
-                        <div class="listing-stars" aria-label="Avaliação: 4 de 5 estrelas">★★★★☆</div>
                     </div>
-                </div>
-
-                <div class="listing-item">
-                    <img class="listing-image" src="/Imagens/restaurante.jpeg" alt="Imagem do estabelecimento">
-                    <div class="listing-info">
-                        <div class="listing-title">Ristorant</div>
-                        <div class="listing-type">Restaurante</div>
-                        <div class="listing-stars" aria-label="Avaliação: 5 de 5 estrelas">★★★★★</div>
-                    </div>
-                </div>
-
-                <div class="listing-item">
-                    <img class="listing-image" src="/Imagens/bakery.jpeg" alt="Imagem do estabelecimento">
-                    <div class="listing-info">
-                        <div class="listing-title">Bakery Cafe</div>
-                        <div class="listing-type">Cafeteria</div>
-                        <div class="listing-stars" aria-label="Avaliação: 3 de 5 estrelas">★★★☆☆</div>
-                    </div>
-                </div>
-
-                <div class="listing-item">
-                    <img class="listing-image" src="/Imagens/coffeshopP.jpeg" alt="Imagem do estabelecimento">
-                    <div class="listing-info">
-                        <div class="listing-title">Café shop</div>
-                        <div class="listing-type">Cafeteria</div>
-                        <div class="listing-stars" aria-label="Avaliação: 4 de 5 estrelas">★★★★☆</div>
-                    </div>
-                </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Nenhum estabelecimento cadastrado ainda.</p>
+                {% endif %}
             </main>
 
             <!-- Barra lateral (direita) para exibir um estabelecimento em destaque -->
             <aside class="highlight">
                 <h2>DESTAQUE</h2>
-                <img class="highlight-image" src="/Imagens/bakery.jpeg" alt="Imagem do destaque">
+                <img class="highlight-image" src="{{ url_for('static', filename='images/bakery.jpeg') }}" alt="Imagem do destaque">
                 <div class="highlight-title">Ristorant</div>
                 <div class="highlight-type">Restaurante</div>
                 <div class="highlight-stars" aria-label="Avaliação: 3 de 5 estrelas" style="color: var(--star-color);">★★★☆☆</div>
@@ -189,12 +193,12 @@
                 </a>
             </div>
             <div class="footer-center">
-                <img src="/Imagens/Acolhe_simbolo.png" alt="Símbolo Acolhe App" class="footer-logo">
+                <img src="{{ url_for('static', filename='images/Acolhe_simbolo.png') }}" alt="Símbolo Acolhe App" class="footer-logo">
             </div>
             <div class="footer-left">
                 <p>Nos siga no Instagram</p>
                 <a href="https://www.instagram.com/acolhe_app?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank">
-                    <img src="/Imagens/instagram.png" alt="Ícone do Instagram" class="social-icon">@Acolhe_App
+                    <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Ícone do Instagram" class="social-icon">@Acolhe_App
                 </a>
             </div>
         </div>
@@ -202,30 +206,47 @@
 
     <!-- Script para controlar o menu dropdown do filtro -->
     <script>
-        // Seleciona o botão de filtro e a caixa de dropdown
+        // Script para o menu de usuário
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
+
+        if (userMenuButton) {
+            userMenuButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isExpanded = userMenuDropdown.classList.toggle('active');
+                userMenuButton.setAttribute('aria-expanded', isExpanded);
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (userMenuDropdown && userMenuDropdown.classList.contains('active')) {
+                if (!userMenuDropdown.contains(event.target) && !userMenuButton.contains(event.target)) {
+                    userMenuDropdown.classList.remove('active');
+                    userMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+
+        // Script para o menu de filtro (se existir)
         const filterButton = document.getElementById('filter-toggle-button');
         const filterDropdown = document.getElementById('filter-dropdown-box');
 
-        // Adiciona um evento de clique ao botão
-        filterButton.addEventListener('click', (event) => {
-            // Impede que o clique no botão feche o menu imediatamente (caso o evento se propague para o document)
-            event.stopPropagation();
-            // Alterna a classe 'active' para mostrar ou esconder o dropdown
-            filterDropdown.classList.toggle('active');
-            // Atualiza o atributo aria-expanded para acessibilidade
-            const isExpanded = filterDropdown.classList.contains('active');
-            filterButton.setAttribute('aria-expanded', isExpanded);
-        });
+        if (filterButton) {
+            filterButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isExpanded = filterDropdown.classList.toggle('active');
+                filterButton.setAttribute('aria-expanded', isExpanded);
+            });
 
-        // Adiciona um evento de clique ao documento inteiro para fechar o dropdown
-        document.addEventListener('click', (event) => {
-            // Verifica se o clique foi fora do dropdown e do botão
-            if (!filterDropdown.contains(event.target) && !filterButton.contains(event.target)) {
-                // Remove a classe 'active' para esconder o dropdown
-                filterDropdown.classList.remove('active');
-                filterButton.setAttribute('aria-expanded', 'false');
-            }
-        });
+            document.addEventListener('click', (event) => {
+                if (filterDropdown.classList.contains('active')) {
+                    if (!filterDropdown.contains(event.target) && !filterButton.contains(event.target)) {
+                        filterDropdown.classList.remove('active');
+                        filterButton.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>

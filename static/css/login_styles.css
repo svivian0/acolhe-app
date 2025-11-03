@@ -13,11 +13,11 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Imagem de fundo */
-    background-image: url('/Imagens/Tela_de_fundo.jpg');
-    background-size: cover;
-    background-position: center;
-    position: relative;
+    /* Adiciona a imagem de fundo */
+    background-image: url('/static/images/Tela_de_fundo.jpg'); /* Caminho absoluto para o Flask */
+    background-size: cover; /* Faz a imagem cobrir todo o espaço */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Evita que a imagem se repita */
 }
 
 /* Overlay azul semi-transparente */

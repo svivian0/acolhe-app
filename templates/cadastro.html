@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Acolhe App</title>
+    <!-- Importa a fonte do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Link para a mesma folha de estilos do login -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_styles.css') }}">
+</head>
+<body>
+    <!-- Container principal que cobre toda a página -->
+    <div class="login-page">
+        <!-- Caixa de cadastro centralizada -->
+        <div class="login-container">
+            <!-- Seção da esquerda com a logo e o slogan -->
+            <div class="login-info">
+                <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="info-logo">
+                <h1>Acolhe App</h1>
+                <p>Onde a inclusão acontece de verdade!</p>
+            </div>
+
+            <!-- Seção da direita com o formulário de cadastro -->
+            <div class="login-form">
+                <h2>Crie sua Conta</h2>
+
+                <!-- Bloco para exibir mensagens flash -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="nome">Nome de Usuário</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="senha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_usuario">Tipo de Conta</label>
+                        <select id="tipo_usuario" name="tipo_usuario" required>
+                            <option value="pessoal">Pessoal (usuário)</option>
+                            <option value="empresarial">Empresarial (estabelecimento)</option>
+                        </select>
+                    </div>
+
+                    <!-- Campos que só aparecem para conta empresarial -->
+                    <div id="campos-empresariais" style="display: none;">
+                        <div class="form-group">
+                            <label for="razao_social">Razão Social</label>
+                            <input type="text" id="razao_social" name="razao_social">
+                        </div>
+                        <div class="form-group">
+                            <label for="cnpj">CNPJ</label>
+                            <input type="text" id="cnpj" name="cnpj">
+                        </div>
+                        <div class="form-group">
+                            <label for="endereco">Endereço</label>
+                            <input type="text" id="endereco" name="endereco">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-btn">Cadastrar</button>
+                </form>
+                <div class="signup-link">
+                    <span>Já tem uma conta?</span>
+                    <a href="{{ url_for('login') }}">Entre</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script para mostrar/esconder os campos empresariais
+        document.getElementById('tipo_usuario').addEventListener('change', function () {
+            var camposEmpresariais = document.getElementById('campos-empresariais');
+            var camposObrigatorios = camposEmpresariais.querySelectorAll('input');
+
+            if (this.value === 'empresarial') {
+                camposEmpresariais.style.display = 'block';
+                // Torna os campos obrigatórios quando visíveis
+                camposObrigatorios.forEach(function(input) {
+                    input.required = true;
+                });
+            } else {
+                camposEmpresariais.style.display = 'none';
+                // Remove a obrigatoriedade quando escondidos para não bloquear o envio
+                camposObrigatorios.forEach(function(input) {
+                    input.required = false;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

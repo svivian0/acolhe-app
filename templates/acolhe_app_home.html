@@ -5,16 +5,10 @@
     <meta charset="UTF-8">
     <!-- Garante que a página seja exibida corretamente em dispositivos móveis, ajustando a largura ao tamanho da tela do dispositivo -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Título da página que aparece na aba do navegador -->
-    <title>Acolhe App - Início</title>
-    <!-- Link para a folha de estilos CSS externa que define a aparência da página -->
-
-    <link rel="stylesheet" href="/style/acolhe_app_home_styles.css">
-
-    <link rel="stylesheet" href="acolhe_app_home_styles">
-
-    <link rel="stylesheet" href="/style/acolhe_app_home_styles.css">
-
+    <!-- O título será preenchido pela variável 'titulo' passada pelo Flask -->
+    <title> Acolhe App</title>
+    <!-- Link para a folha de estilos usando url_for para encontrar o arquivo na pasta 'static' -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/acolhe_app_home_styles.css') }}">
     <!-- Comentário: Sugestão para usar uma biblioteca de ícones como Font Awesome para os ícones da página -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> -->
 </head>
@@ -26,16 +20,16 @@
         <div class="header-left">
             <!-- Container para o logotipo -->
             <div class="logo-container">
-                <img src="/Imagens/Acolhe_icon.png" alt="Logo Acolhe App" class="logo">
+                <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="logo">
             </div>
 
             <!-- Seção de Navegação Principal. --> 
             <nav class="main-nav">
                 <!-- Lista não ordenada que contém os links do menu -->
                 <ul>
-                    <li><a href="#top">INÍCIO</a></li>
-                    <li><a href="/src/comercio.html">COMÉRCIO</a></li>
-                    <li><a href="/src/acolhe-app-sobre-nos.html">SOBRE NÓS</a></li>
+                    <li><a href="{{ url_for('home') }}">INÍCIO</a></li>
+                    <li><a href="{{ url_for('comercio') }}">COMÉRCIO</a></li>
+                    <li><a href="{{ url_for('sobre_nos') }}">SOBRE NÓS</a></li>
                 </ul>
             </nav>
         </div>
@@ -46,7 +40,7 @@
             <div class="search-bar">
                 <!-- Ícone de lupa clicável (envolvido por um botão) -->
                 <button class="search-button">
-                    <img src="/Imagens/Lupa.png" alt="Ícone de pesquisa" class="search-icon-img">
+                    <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
                 </button>
                 <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
                 <input type="search" placeholder="Pesquisar">
@@ -56,20 +50,27 @@
             <div class="header-right">
                 <!-- Menu de usuário com ícones de perfil e opções -->
                 <div class="user-menu">
-                    <!-- Ícone de perfil que leva diretamente para a página de perfil -->
-                    <a href="/src/perfilestab.html" aria-label="Ver perfil">
-                        <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
+                    <!-- Ícone de perfil que leva para a página de perfil do estabelecimento -->
+                    <a href="{{ url_for('login') }}" aria-label="Login ou Perfil">
+                        <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
                     </a>
                     <!-- Container do menu de usuário para posicionamento do dropdown -->
                     <div class="user-dropdown-container">
                         <button id="user-menu-button" class="icon-button" aria-label="Menu de opções" aria-haspopup="true" aria-expanded="false">
-                            <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
+                            <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
                         </button>
                         <div id="user-menu-dropdown" class="user-dropdown" role="menu">
-                            <a href="/src/perfilestab.html" class="user-dropdown-item" role="menuitem">Perfil</a>
-                            <a href="#" class="user-dropdown-item" role="menuitem">Configurações</a>
-                            <a href="#" class="user-dropdown-item" role="menuitem">Cadastrar/Login</a>
-                            <a href="#" class="user-dropdown-item" role="menuitem">Sair</a>
+                            {% if current_user.is_authenticated %}
+                                <!-- Links para usuários LOGADOS -->
+                                <a href="#" class="user-dropdown-item" role="menuitem">Olá, {{ current_user.nome }}!</a>
+                                <a href="#" class="user-dropdown-item" role="menuitem">Meu Perfil</a>
+                                <a href="#" class="user-dropdown-item" role="menuitem">Configurações</a> 
+                                <a href="{{ url_for('logout') }}" class="user-dropdown-item" role="menuitem">Sair</a>
+                            {% else %}
+                                <!-- Links para VISITANTES (não logados) -->
+                                <a href="{{ url_for('login') }}" class="user-dropdown-item" role="menuitem">Login</a>
+                                <a href="{{ url_for('cadastro_html') }}" class="user-dropdown-item" role="menuitem">Cadastrar</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -86,16 +87,16 @@
                 <div class="slides-wrapper">
                     <!-- Imagens do carrossel -->
                     <div class="slide">
-                        <img src="/Imagens/bakery.jpeg" alt="" class="slide-bg">
-                        <img src="/Imagens/bakery.jpeg" alt="Imagem de uma padaria" class="slide-fg">
+                        <img src="{{ url_for('static', filename='images/bakery.jpeg') }}" alt="" class="slide-bg">
+                        <img src="{{ url_for('static', filename='images/bakery.jpeg') }}" alt="Imagem de uma padaria" class="slide-fg">
                     </div>
                     <div class="slide">
-                        <img src="/Imagens/cafeshop.jpeg" alt="" class="slide-bg">
-                        <img src="/Imagens/cafeshop.jpeg" alt="Imagem de uma cafeteria" class="slide-fg">
+                        <img src="{{ url_for('static', filename='images/cafeshop.jpeg') }}" alt="" class="slide-bg">
+                        <img src="{{ url_for('static', filename='images/cafeshop.jpeg') }}" alt="Imagem de uma cafeteria" class="slide-fg">
                     </div>
                     <div class="slide">
-                        <img src="/Imagens/coffeshop.jpeg" alt="" class="slide-bg">
-                        <img src="/Imagens/coffeshop.jpeg" alt="Imagem de um restaurante" class="slide-fg">
+                        <img src="{{ url_for('static', filename='images/coffeshop.jpeg') }}" alt="" class="slide-bg">
+                        <img src="{{ url_for('static', filename='images/coffeshop.jpeg') }}" alt="Imagem de um restaurante" class="slide-fg">
                     </div>
                 </div>
 
@@ -113,17 +114,17 @@
         <!-- Seção com cartões de conteúdo, que podem ser usados para links rápidos, produtos ou serviços -->
         <section class="content-cards">
             <div class="card">
-                <img src="/Imagens/card_Lupa.png" alt="Ícone de busca" class="card-icon">
+                <img src="{{ url_for('static', filename='images/card_Lupa.png') }}" alt="Ícone de busca" class="card-icon">
                 <h3>Busque estabelecimentos</h3>
                 <p>Encontre estabelecimentos realmente preparados para acolher pessoas neurodivergentes, oferecendo atendimento e ambiente adequados.</p>
             </div>
             <div class="card">
-                <img src="/Imagens/card_medalha.png" alt="Ícone de selo de qualidade" class="card-icon">
+                <img src="{{ url_for('static', filename='images/card_medalha.png') }}" alt="Ícone de selo de qualidade" class="card-icon">
                 <h3>Avalie a Qualidade</h3>
                 <p>Nosso sistema de ranking é baseado na qualidade do atendimento, com avaliações de 1 a 5 estrelas feitas pela comunidade.</p>
             </div>
             <div class="card">
-                <img src="/Imagens/card_coracao.png" alt="Ícone de fone de ouvido para atendimento" class="card-icon">
+                <img src="{{ url_for('static', filename='images/card_coracao.png') }}" alt="Ícone de fone de ouvido para atendimento" class="card-icon">
                 <h3>Atendimento Acolhedor</h3>
                 <p>Todos os profissionais e locais são avaliados pela qualidade no atendimento e no acolhimento a pessoas atípicas.</p>
             </div>
@@ -141,12 +142,12 @@
                 </a>
             </div>
             <div class="footer-center">
-                <img src="/Imagens/Acolhe_simbolo.png" alt="Símbolo Acolhe App" class="footer-logo">
+                <img src="{{ url_for('static', filename='images/Acolhe_simbolo.png') }}" alt="Símbolo Acolhe App" class="footer-logo">
             </div>
             <div class="footer-left">
                 <p>Nos siga no Instagram</p>
                 <a href="https://www.instagram.com/acolhe_app?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank">
-                    <img src="/Imagens/instagram.png" alt="Ícone do Instagram" class="social-icon">@Acolhe_App
+                    <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Ícone do Instagram" class="social-icon">@Acolhe_App
                 </a>
             </div>
         </div>

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Estabelecimentos</title>
-    <link rel="stylesheet" href="/style/perfilestab.css">
-    <link rel="stylesheet" href="/style/header.css">
+    <title>{{ titulo }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfilestab.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
 </head>
 <body>
 
@@ -15,17 +15,17 @@
         <div class="header-left">
             <!-- Container para o logotipo -->
             <div class="logo-container">
-                <img src="/Imagens/Acolhe_icon.png" alt="Logo Acolhe App" class="logo">
-                <img src="/Imagens/separadorvertical.png" id="sepvertical" alt="">
+                <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="logo">
+                <img src="{{ url_for('static', filename='images/separadorvertical.png') }}" id="sepvertical" alt="">
             </div>
 
             <!-- Seção de Navegação Principal. -->
             <nav class="main-nav">
                 <!-- Lista não ordenada que contém os links do menu -->
                 <ul>
-                    <li><a href="acolhe_app_home.html">INÍCIO</a></li>
-                    <li><a href="comercio.html">COMÉRCIO</a></li>
-                    <li><a href="acolhe-app-sobre-nos.html">SOBRE NÓS</a></li>
+                    <li><a href="{{ url_for('home') }}">INÍCIO</a></li>
+                    <li><a href="{{ url_for('comercio') }}">COMÉRCIO</a></li>
+                    <li><a href="{{ url_for('sobre_nos') }}">SOBRE NÓS</a></li>
                 </ul>
             </nav>
         </div>
@@ -36,7 +36,7 @@
             <div class="search-bar">
                 <!-- Ícone de lupa clicável (envolvido por um botão) -->
                 <button class="search-button">
-                    <img src="/Imagens/Lupa.png" alt="Ícone de pesquisa" class="search-icon-img">
+                    <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
                 </button>
                 <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
                 <input type="search" placeholder="Pesquisar">
@@ -47,9 +47,9 @@
                 <!-- Menu de usuário com ícones de perfil e opções -->
                 <div class="user-menu">
                     <!-- Ícone de perfil de usuário substituído por uma imagem -->
-                    <img src="/Imagens/IconUser.png" alt="Ícone do Perfil" class="icon user-icon">
+                    <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
                     <!-- Ícone de menu "sanduíche" substituído por uma imagem -->
-                    <img src="/Imagens/Barrinhasp.png" alt="Menu de opções" class="icon menu-icon">
+                    <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@
 
     <div class="user">
     <img id="imgestabc" 
-    src="/Imagens/imgcarregando.png" 
+    src="{{ url_for('static', filename='images/imgcarregando.png') }}" 
     alt="">
     
     <div class="user-info">
@@ -80,7 +80,7 @@
         <!-- COMENTARIOS -->
         <div id="bcoment1" class="comment-box">
             <div class="comment-header">
-                <img src="/Imagens/IconUser.png" alt="Foto do usuário" class="comment-user-pic">
+                <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Foto do usuário" class="comment-user-pic">
                 <div class="comment-user-info">
                     <span class="comment-user-name">USUÁRIO</span>
                     <span class="comment-stars">★★★★☆</span>
@@ -91,7 +91,7 @@
 
         <div id="bcoment2" class="comment-box">
             <div class="comment-header">
-                <img src="/Imagens/IconUser.png" alt="Foto do usuário" class="comment-user-pic">
+                <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Foto do usuário" class="comment-user-pic">
                 <div class="comment-user-info">
                     <span class="comment-user-name">USUÁRIO</span>
                     <span class="comment-stars">★★★☆☆</span>
@@ -110,7 +110,7 @@
             </div>
 
             <div class="rodape-item logo">
-                <img src="/Imagens/logosemtexto.png" alt="Logo do Acolhe App" class="logo-imagem">
+                <img src="{{ url_for('static', filename='images/logosemtexto.png') }}" alt="Logo do Acolhe App" class="logo-imagem">
             </div>
 
             <div class="rodape-item instagram">

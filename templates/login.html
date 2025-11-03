@@ -9,16 +9,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Link para a nova folha de estilos do login -->
-    <link rel="stylesheet" href="/style/login_styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_styles.css') }}">
 </head>
 <body>
+   
     <!-- Container principal que cobre toda a página -->
     <div class="login-page">
         <!-- Caixa de login centralizada -->
         <div class="login-container">
             <!-- Seção da esquerda com a logo e o slogan -->
             <div class="login-info">
-                <img src="/Imagens/Acolhe_icon.png" alt="Logo Acolhe App" class="info-logo">
+                <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="info-logo">
                 <h1>Acolhe App</h1>
                 <p>Onde a inclusão acontece de verdade!</p>
             </div>
@@ -26,20 +27,30 @@
             <!-- Seção da direita com o formulário -->
             <div class="login-form">
                 <h2>Login</h2>
-                <form>
+                
+                <!-- Bloco para exibir mensagens flash -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Senha</label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="senha" required>
                     </div>
                     <button type="submit" class="login-btn">Entrar</button>
                 </form>
                 <div class="signup-link">
                     <span>Não tem uma conta ainda?</span>
-                    <a href="#">Cadastre-se</a>
+                    <a href="{{ url_for('cadastro_html') }}">Cadastre-se</a>
                 </div>
             </div>
         </div>
