@@ -2,8 +2,8 @@ create database acolheapp;
 use acolheapp;
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE, 
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE, 
     senha VARCHAR(255) NOT NULL,
     tipo_usuario ENUM('pessoal', 'empresarial') NOT NULL,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -13,7 +13,9 @@ CREATE TABLE usuarios (
 CREATE TABLE perfis_pessoais (
     id_perfil_pessoal INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL UNIQUE, 
-    neurodivergencia VARCHAR(255),
+    sobremim VARCHAR(200),
+    localizacao VARCHAR(200),
+    imagemperfil VARCHAR(200),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
 
@@ -21,14 +23,19 @@ CREATE TABLE perfis_pessoais (
 CREATE TABLE estabelecimentos (
     id_estabelecimento INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL UNIQUE, 
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
     razao_social VARCHAR(255) NOT NULL,
     cnpj VARCHAR(18) NOT NULL UNIQUE,
     endereco TEXT NOT NULL,
     telefone VARCHAR(20),
     descricao TEXT,
+    imagemperfilestab VARCHAR(200),
     media_avaliacao DECIMAL(2,1) DEFAULT 0.0,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
+
 
 
 CREATE TABLE categorias (

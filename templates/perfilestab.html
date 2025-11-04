@@ -46,8 +46,13 @@
             <div class="header-right">
                 <!-- Menu de usuário com ícones de perfil e opções -->
                 <div class="user-menu">
-                    <!-- Ícone de perfil de usuário substituído por uma imagem -->
-                    <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
+                    <a href="{{ url_for('perfil_pessoal') if current_user.is_authenticated else url_for('login') }}" aria-label="Login ou Perfil">
+                        {% if current_user.is_authenticated and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
+                            <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.perfil_pessoal.imagemperfil) }}" alt="Ícone do Perfil" class="icon user-icon">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
+                        {% endif %}
+                    </a>
                     <!-- Ícone de menu "sanduíche" substituído por uma imagem -->
                     <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
                 </div>
@@ -58,47 +63,64 @@
 
     <div class="user">
     <img id="imgestabc" 
-    src="{{ url_for('static', filename='images/imgcarregando.png') }}" 
-    alt="">
+    src="{{ url_for('static', filename='images/' + (estabelecimento.imagemperfilestab or 'placeholder.png')) }}" 
+    alt="Imagem de {{ estabelecimento.nome }}">
     
     <div class="user-info">
-        <h1 id="NomeLocal">NOME ESTABELECIMENTO</h1>
+        <h1 id="NomeLocal">{{ estabelecimento.nome }}</h1>
     
-        <h2 id="TipoLocal">TIPO</h2>
+        <h2 id="TipoLocal">{{ estabelecimento.razao_social }}</h2>
     
-        <span id="Nota" class="stars">★★★★☆</span>
+        <span id="Nota" class="stars">Nota Média: {{ "%.1f"|format(estabelecimento.media_avaliacao) }} / 5.0</span>
     
-        <p id="descricao" class="texto">breve texto sobre breve texto sobre breve texto sobre breve texto sobre breve texto 
-            sobre breve texto sobre breve texto sobre breve texto sobre breve texto sobre breve 
-            texto sobre breve texto sobre breve texto sobre breve texto sobre breve texto sobre 
-            breve texto sobre LOCALIZAÇÃO </p>
+        <p id="descricao" class="texto">{{ estabelecimento.descricao or 'Nenhuma descrição fornecida.' }}</p>
+        <p id="endereco" class="texto"><b>Endereço:</b> {{ estabelecimento.endereco }}</p>
     </div>
     </div>
 
     <section class="coment">
         <h2>Avaliações</h2>
-        <!-- COMENTARIOS -->
-        <div id="bcoment1" class="comment-box">
-            <div class="comment-header">
-                <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Foto do usuário" class="comment-user-pic">
-                <div class="comment-user-info">
-                    <span class="comment-user-name">USUÁRIO</span>
-                    <span class="comment-stars">★★★★☆</span>
+
+        <!-- Formulário para deixar uma avaliação -->
+        <div class="comment-box evaluation-form">
+            <h3>Deixe sua avaliação</h3>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="nota">Nota (1 a 5):</label>
+                    <input type="number" id="nota" name="nota" min="1" max="5" step="0.5" required>
                 </div>
-            </div>
-            <p class="comment-text">Exemplo Texto</p>
+                <div class="form-group">
+                    <label for="comentario">Comentário:</label>
+                    <textarea id="comentario" name="comentario" rows="4" placeholder="Conte como foi sua experiência..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Enviar Avaliação</button>
+            </form>
         </div>
 
-        <div id="bcoment2" class="comment-box">
-            <div class="comment-header">
-                <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Foto do usuário" class="comment-user-pic">
-                <div class="comment-user-info">
-                    <span class="comment-user-name">USUÁRIO</span>
-                    <span class="comment-stars">★★★☆☆</span>
+        <!-- Exibição das avaliações existentes -->
+        {% if estabelecimento.avaliacoes %}
+            {% for avaliacao in estabelecimento.avaliacoes %}
+            <div class="comment-box">
+                <div class="comment-header">
+                    {% if avaliacao.usuario.perfil_pessoal and avaliacao.usuario.perfil_pessoal.imagemperfil %}
+                        <img src="{{ url_for('static', filename='images/profile_pics/' + avaliacao.usuario.perfil_pessoal.imagemperfil) }}" alt="Foto de {{ avaliacao.usuario.nome }}" class="comment-user-pic">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Foto do usuário" class="comment-user-pic">
+                    {% endif %}
+                    <div class="comment-user-info">
+                        <span class="comment-user-name">{{ avaliacao.usuario.nome }}</span>
+                        <span class="comment-stars">Nota: {{ "%.1f"|format(avaliacao.nota_geral) }}</span>
+                    </div>
                 </div>
+                <p class="comment-text">{{ avaliacao.comentario }}</p>
+                <p class="comment-date">Em: {{ avaliacao.data_avaliacao.strftime('%d/%m/%Y') }}</p>
             </div>
-            <p class="comment-text">Exemplo Texto</p>
-        </div>
+            {% endfor %}
+        {% else %}
+            <div class="comment-box">
+                <p>Este estabelecimento ainda não possui avaliações. Seja o primeiro a avaliar!</p>
+            </div>
+        {% endif %}
     </section>
 
         <footer class="rodape">

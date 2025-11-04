@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Define a codificação de caracteres para UTF-8, garantindo a exibição correta de acentos e símbolos -->
+    <meta charset="UTF-8">
+    <!-- Configura a viewport para que a página seja responsiva em dispositivos móveis -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título da página exibido na aba do navegador -->
+    <title>Perfil Pessoal - Acolhe App</title>
+    <!-- Pré-conecta aos servidores de fontes do Google para um carregamento mais rápido -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Importa a fonte 'Inter' do Google Fonts com diferentes pesos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Links para as folhas de estilo usando url_for -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/acolhe_app_home_styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/comercio_styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_pessoal.css') }}" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <!-- Container para a parte esquerda do cabeçalho (logo e navegação) -->
+        <div class="header-left">
+            <!-- Container para o logotipo -->
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="logo">
+            </div>
+
+            <!-- Seção de Navegação Principal. -->
+            <nav class="main-nav">
+                <!-- Lista não ordenada que contém os links do menu -->
+                <ul>
+                    <li><a href="{{ url_for('home') }}">INÍCIO</a></li>
+                    <li><a href="{{ url_for('comercio') }}">COMÉRCIO</a></li>
+                    <li><a href="{{ url_for('sobre_nos') }}">SOBRE NÓS</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Container para a parte direita do cabeçalho (ícones de usuário) -->
+        <div class="header-right">
+            <!-- Menu de usuário com ícones de perfil e opções -->
+            <div class="user-menu">
+                <!-- Ícone de perfil que leva para a página de login se não estiver logado -->
+                <a href="{{ url_for('perfil_pessoal') if current_user.is_authenticated else url_for('login') }}" aria-label="Login ou Perfil">
+                    {% if current_user.is_authenticated and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
+                        <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.perfil_pessoal.imagemperfil) }}" alt="Ícone do Perfil" class="icon user-icon">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
+                    {% endif %}
+                </a>
+                <!-- Container do menu de usuário para posicionamento do dropdown -->
+                <div class="user-dropdown-container">
+                    <button id="user-menu-button" class="icon-button" aria-label="Menu de opções" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
+                    </button>
+                    <div id="user-menu-dropdown" class="user-dropdown" role="menu">
+                        {% if current_user.is_authenticated %}
+                            <!-- Links para usuários LOGADOS -->
+                            <a href="#" class="user-dropdown-item" role="menuitem">Olá, {{ current_user.nome }}!</a>
+                            <a href="{{ url_for('perfil_pessoal') }}" class="user-dropdown-item" role="menuitem">Meu Perfil</a>
+                            <a href="{{ url_for('logout') }}" class="user-dropdown-item" role="menuitem">Sair</a>
+                        {% else %}
+                            <!-- Links para VISITANTES (não logados) -->
+                            <a href="{{ url_for('login') }}" class="user-dropdown-item" role="menuitem">Login</a>
+                            <a href="{{ url_for('cadastro_html') }}" class="user-dropdown-item" role="menuitem">Cadastrar</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <!-- 2. Seção de Perfil do Usuário -->
+        <aside class="user-profile-sidebar">
+            <div class="profile-pic">
+                <!-- Exibe a imagem do perfil do usuário ou a imagem padrão -->
+                {% if current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
+                    <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.perfil_pessoal.imagemperfil) }}" alt="Foto de Perfil">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Foto de Perfil" >
+                {% endif %}
+            </div>
+            <h1 class="user-name">{{ current_user.nome }}</h1>
+            <!-- Exibe a localização salva ou um placeholder se não houver -->
+            <p class="user-location">
+                {{ current_user.perfil_pessoal.localizacao if current_user.perfil_pessoal and current_user.perfil_pessoal.localizacao else 'Localização não informada' }}
+            </p>
+        </aside>
+
+        <!-- 3. Seções de Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Adicionado enctype="multipart/form-data" para permitir upload de arquivos -->
+            <form method="POST" action="{{ url_for('perfil_pessoal') }}" enctype="multipart/form-data">
+                <section class="content-box">
+                    <h2>SOBRE MIM</h2>
+                    <!-- Campo para inserir a localização -->
+                    <label for="imagemperfil">Alterar Foto de Perfil:</label>
+                    <input type="file" id="imagemperfil" name="imagemperfil" class="form-input" accept="image/png, image/jpeg, image/gif">
+
+
+                    <label for="localizacao">Localização (Cidade, Estado):</label>
+                    <input type="text" id="localizacao" name="localizacao" class="form-input" placeholder="Ex: São Paulo, SP" value="{{ current_user.perfil_pessoal.localizacao if current_user.perfil_pessoal else '' }}">
+
+                    <label for="about-me-area" style="margin-top: 15px; display: block;">Sobre Mim:</label>
+                    <textarea name="sobremim" id="about-me-area" class="content-area" placeholder="Escreva um pouco sobre você...">{{ current_user.perfil_pessoal.sobremim if current_user.perfil_pessoal else '' }}</textarea>
+                    <div class="form-actions">
+                        <button type="submit" name="salvar_alteracoes" class="save-button">Salvar Alterações</button>
+                        <button type="submit" name="remover_foto" value="true" class="remove-button" formnovalidate>Remover Foto</button>
+                    </div>
+                </section>
+            </form>
+            <section class="content-box">
+                <h2>AVALIAÇÕES</h2>
+                <div id="reviews-area">
+                    {% if avaliacoes %}
+                        {% for avaliacao in avaliacoes %}
+                        <div class="review-item">
+                            <div class="review-header">
+                                <h3 class="review-establishment-name">
+                                    <a href="{{ url_for('perfil_estabelecimento', id=avaliacao.estabelecimento.id_estabelecimento) }}">
+                                        {{ avaliacao.estabelecimento.nome }}
+                                    </a>
+                                </h3>
+                                <span class="review-stars" aria-label="Nota: {{ avaliacao.nota_geral }} de 5">
+                                    Nota: {{ "%.1f"|format(avaliacao.nota_geral) }}
+                                </span>
+                            </div>
+                            <p class="review-comment">{{ avaliacao.comentario }}</p>
+                            <p class="review-date">Avaliado em: {{ avaliacao.data_avaliacao.strftime('%d/%m/%Y') }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Você ainda não fez nenhuma avaliação.</p>
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Rodapé da página, reutilizado de outras páginas -->
+    <footer class="main-footer">
+        <!-- Container para o conteúdo do rodapé -->
+        <div class="footer-content">
+            <div class="footer-right">
+                <p>Possui alguma reclamação?</p>
+                <a href="mailto:acolhe.app@gmail.com" class="email-button">
+                    acolhe.app@gmail.com
+                </a>
+            </div>
+            <div class="footer-center">
+                <img src="{{ url_for('static', filename='images/Acolhe_simbolo.png') }}" alt="Símbolo Acolhe App" class="footer-logo">
+            </div>
+            <div class="footer-left">
+                <p>Nos siga no Instagram!</p>
+                <a href="https://www.instagram.com/acolhe_app?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank">
+                    <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Ícone do Instagram" class="social-icon">@Acolhe_App
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para controlar o menu dropdown do filtro -->
+    <script>
+        // Script para o menu de usuário
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
+
+        if (userMenuButton) {
+            userMenuButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isExpanded = userMenuDropdown.classList.toggle('active');
+                userMenuButton.setAttribute('aria-expanded', isExpanded);
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (userMenuDropdown && userMenuDropdown.classList.contains('active')) {
+                if (!userMenuDropdown.contains(event.target) && !userMenuButton.contains(event.target)) {
+                    userMenuDropdown.classList.remove('active');
+                    userMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+
+        // Script para o menu de filtro (se existir)
+        const filterButton = document.getElementById('filter-toggle-button');
+        const filterDropdown = document.getElementById('filter-dropdown-box');
+
+        if (filterButton) {
+            // O código para o dropdown de filtro pode ser adicionado aqui se necessário no futuro.
+        }
+    </script>
+</body>
+</html>

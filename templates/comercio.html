@@ -45,8 +45,12 @@
             <!-- Menu de usuário com ícones de perfil e opções -->
             <div class="user-menu">
                 <!-- Ícone de perfil que leva para a página de login se não estiver logado -->
-                <a href="{{ url_for('login') }}" aria-label="Login ou Perfil">
-                    <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
+                <a href="{{ url_for('perfil_pessoal') if current_user.is_authenticated else url_for('login') }}" aria-label="Login ou Perfil">
+                     {% if current_user.is_authenticated and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
+                        <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.perfil_pessoal.imagemperfil) }}" alt="Ícone do Perfil" class="icon user-icon">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
+                    {% endif %}
                 </a>
                 <!-- Container do menu de usuário para posicionamento do dropdown -->
                 <div class="user-dropdown-container">
@@ -57,7 +61,7 @@
                         {% if current_user.is_authenticated %}
                             <!-- Links para usuários LOGADOS -->
                             <a href="#" class="user-dropdown-item" role="menuitem">Olá, {{ current_user.nome }}!</a>
-                            <a href="#" class="user-dropdown-item" role="menuitem">Meu Perfil</a>
+                            <a href="{{ url_for('perfil_pessoal') }}" class="user-dropdown-item" role="menuitem">Meu Perfil</a>
                             <a href="{{ url_for('logout') }}" class="user-dropdown-item" role="menuitem">Sair</a>
                         {% else %}
                             <!-- Links para VISITANTES (não logados) -->

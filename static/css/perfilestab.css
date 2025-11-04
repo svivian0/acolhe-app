@@ -54,7 +54,7 @@ a{
 }
 
 .stars {
-    color: #FFD700;
+    color: #c28b00;
     font-size: 40px;
 }
 
@@ -70,6 +70,11 @@ a{
     margin: 0;
     color: #333;
     line-height: 1.6;
+}
+
+#endereco {
+    margin-top: 15px;
+    font-size: 0.9em;
 }
 
 /* Estilo para a seção de comentários */
@@ -135,6 +140,58 @@ a{
     margin: 0;
     line-height: 1.5;
     color: #445;
+}
+.comment-date {
+    margin-top: 10px;
+    text-align: right;
+    font-size: 0.8em;
+    color: #888;
+}
+
+/* Estilos para o formulário de avaliação */
+.evaluation-form {
+    background-color: #e9eef2;
+    border: 1px solid #d1d9e0;
+}
+
+.evaluation-form h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.evaluation-form .form-group {
+    margin-bottom: 15px;
+}
+
+.evaluation-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.evaluation-form input[type="number"],
+.evaluation-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: 'inter', sans-serif;
+}
+
+.submit-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2D5E8E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+.submit-btn:hover {
+    background-color: #254c74;
 }
 
 /* --- RODAPÉ --- */
