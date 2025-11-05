@@ -28,8 +28,10 @@
         <div class="header-right">
             <div class="user-menu">
                 <a href="{{ url_for('perfil_pessoal') if current_user.is_authenticated else url_for('login') }}" aria-label="Login ou Perfil">
-                    {% if current_user.is_authenticated and current_user.estabelecimento and current_user.estabelecimento.imagemperfilestab %}
-                        <img src="{{ url_for('static', filename='images/' + current_user.estabelecimento.imagemperfilestab) }}" alt="Ícone do Perfil" class="icon user-icon">
+                    {% if current_user.is_authenticated and current_user.tipo_usuario == 'pessoal' and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
+                        <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.perfil_pessoal.imagemperfil) }}" alt="Ícone do Perfil" class="icon user-icon">
+                    {% elif current_user.is_authenticated and current_user.tipo_usuario == 'empresarial' and current_user.estabelecimento and current_user.estabelecimento.imagemperfilestab %}
+                        <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.estabelecimento.imagemperfilestab) }}" alt="Ícone do Perfil" class="icon user-icon">
                     {% else %}
                         <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
                     {% endif %}
@@ -62,7 +64,7 @@
                 <div class="profile-pic-container">
                     <label>Foto de Perfil do Estabelecimento</label>
                     {% if estabelecimento.imagemperfilestab %}
-                        <img src="{{ url_for('static', filename='images/' + estabelecimento.imagemperfilestab) }}" alt="Foto do Estabelecimento" class="profile-pic">
+                        <img src="{{ url_for('static', filename='images/profile_pics/' + estabelecimento.imagemperfilestab) }}" alt="Foto do Estabelecimento" class="profile-pic">
                     {% else %}
                         <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="Foto do Estabelecimento" class="profile-pic">
                     {% endif %}
@@ -82,6 +84,11 @@
                 <div class="form-group">
                     <label for="telefone">Telefone</label>
                     <input type="text" id="telefone" name="telefone" class="form-input" value="{{ estabelecimento.telefone or '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="link_instagram">Link do Instagram</label>
+                    <input type="url" id="link_instagram" name="link_instagram" class="form-input" placeholder="https://www.instagram.com/seu_usuario" value="{{ estabelecimento.link_instagram or '' }}">
                 </div>
 
                 <div class="form-group">
@@ -113,6 +120,35 @@
                             <label for="acc-{{ item.id_acessibilidade }}">{{ item.item_acessibilidade }}</label>
                         </div>
                     {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Fotos da Galeria</h3>
+                <p>Envie até 3 fotos para aparecerem no perfil do seu estabelecimento.</p>
+
+                <div class="form-group">
+                    <label for="imagem_galeria1">Foto 1 da Galeria:</label>
+                    <input type="file" id="imagem_galeria1" name="imagem_galeria1" class="form-input" accept="image/png, image/jpeg, image/gif">
+                    {% if estabelecimento.imagem_galeria1 %}
+                        <p>Foto atual: <img src="{{ url_for('static', filename='images/profile_pics/' + estabelecimento.imagem_galeria1) }}" alt="Galeria 1" style="width: 100px; height: auto; border-radius: 5px; margin-top: 5px;"></p>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="imagem_galeria2">Foto 2 da Galeria:</label>
+                    <input type="file" id="imagem_galeria2" name="imagem_galeria2" class="form-input" accept="image/png, image/jpeg, image/gif">
+                    {% if estabelecimento.imagem_galeria2 %}
+                        <p>Foto atual: <img src="{{ url_for('static', filename='images/profile_pics/' + estabelecimento.imagem_galeria2) }}" alt="Galeria 2" style="width: 100px; height: auto; border-radius: 5px; margin-top: 5px;"></p>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="imagem_galeria3">Foto 3 da Galeria:</label>
+                    <input type="file" id="imagem_galeria3" name="imagem_galeria3" class="form-input" accept="image/png, image/jpeg, image/gif">
+                    {% if estabelecimento.imagem_galeria3 %}
+                        <p>Foto atual: <img src="{{ url_for('static', filename='images/profile_pics/' + estabelecimento.imagem_galeria3) }}" alt="Galeria 3" style="width: 100px; height: auto; border-radius: 5px; margin-top: 5px;"></p>
+                    {% endif %}
                 </div>
             </div>
 

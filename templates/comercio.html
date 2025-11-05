@@ -46,8 +46,10 @@
             <div class="user-menu">
                 <!-- Ícone de perfil que leva para a página de login se não estiver logado -->
                 <a href="{{ url_for('perfil_pessoal') if current_user.is_authenticated else url_for('login') }}" aria-label="Login ou Perfil">
-                     {% if current_user.is_authenticated and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
+                    {% if current_user.is_authenticated and current_user.tipo_usuario == 'pessoal' and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
                         <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.perfil_pessoal.imagemperfil) }}" alt="Ícone do Perfil" class="icon user-icon">
+                    {% elif current_user.is_authenticated and current_user.tipo_usuario == 'empresarial' and current_user.estabelecimento and current_user.estabelecimento.imagemperfilestab %}
+                        <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.estabelecimento.imagemperfilestab) }}" alt="Ícone do Perfil" class="icon user-icon">
                     {% else %}
                         <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
                     {% endif %}
@@ -58,12 +60,7 @@
                         <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
                     </button>
                     <div id="user-menu-dropdown" class="user-dropdown" role="menu">
-                        {% if current_user.is_authenticated %}
-                            <!-- Links para usuários LOGADOS -->
-                            <a href="#" class="user-dropdown-item" role="menuitem">Olá, {{ current_user.nome }}!</a>
-                            <a href="{{ url_for('perfil_pessoal') }}" class="user-dropdown-item" role="menuitem">Meu Perfil</a>
-                            <a href="{{ url_for('logout') }}" class="user-dropdown-item" role="menuitem">Sair</a>
-                        {% else %}
+                        {% if not current_user.is_authenticated %}
                             <!-- Links para VISITANTES (não logados) -->
                             <a href="{{ url_for('login') }}" class="user-dropdown-item" role="menuitem">Login</a>
                             <a href="{{ url_for('cadastro_html') }}" class="user-dropdown-item" role="menuitem">Cadastrar</a>
@@ -74,117 +71,132 @@
         </div>
     </header>
     <!-- Seção dedicada à barra de pesquisa, com um fundo distinto -->
-    <section class="search-section">
-        <div class="search-bar-comercio">
-            <!-- Botão com o ícone de lupa para iniciar a pesquisa -->
-            <button class="search-button">
-                <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
-            </button>
-            <input type="search" placeholder="Pesquisar estabelecimentos...">
-            <!-- Container para o botão de filtro e o menu dropdown -->
-            <div class="filter-container">
-                <button class="filter-button" id="filter-toggle-button" aria-label="Filtros" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{ url_for('static', filename='images/Filtros.png') }}" alt="Ícone de filtros" class="filter-icon-img">
-                </button>
-                <!-- Caixa de opções de filtro (inicialmente oculta) -->
-                <div class="filter-dropdown" id="filter-dropdown-box" role="menu">
-                    <a href="#" class="filter-dropdown-item" role="menuitem">Melhores Avaliados</a>
-                    <a href="#" class="filter-dropdown-item" role="menuitem">Piores Avaliados</a>
-                    <a href="#" class="filter-dropdown-item" role="menuitem">Categoria</a>
-                    <a href="#" class="filter-dropdown-item" role="menuitem">Nota</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Container principal que envolve o conteúdo da página (filtros, listagens, destaque) -->
     <div class="container">
-        <!-- Conteúdo principal organizado em um layout de grade -->
-        <div class="main-content">
-            <!-- Barra lateral (esquerda) para os filtros de pesquisa -->
-            <aside class="sidebar">
-                <!-- Seção de filtro por localização -->
-                <div class="location-filter">
-                    <h3>Qual sua localização?</h3>
-                    <div class="cep-search-bar">
-                        <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de lupa" class="cep-search-icon">
-                        <input type="text" placeholder="Digite seu CEP" />
-                    </div>
-                </div>
-                <!-- Seção de filtros com opções em botões -->
-                <div class="filter-options">
-                    <div class="filter-grid">
-                        <button class="filter-option">Restaurante</button>
-                        <button class="filter-option">Lancheria</button>
-                        <button class="filter-option">Barbearia</button>
-                        <button class="filter-option">Shopping</button>
-                        <button class="filter-option">Cinema</button>
-                        <button class="filter-option">Hoteis</button>
-                    </div>
-                </div>
-
-                <!-- Seção de filtros por categorias -->
-                <div class="categories">
-                    <h3>Categorias</h3>
-                    <button class="filter-option category-item">Serviços</button>
-                    <button class="filter-option category-item">Turismo</button>
-                    <button class="filter-option category-item">Estabelecimentos</button>
-                    <button class="filter-option category-item">Outros</button>
-                </div>
-
-                <!-- Seção de filtros por avaliação (estrelas) -->
-                <div class="ratings">
-                    <h3>Notas</h3>
-                    <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
-                        <span class="stars">★★★☆☆</span>
-                    </div>
-                    <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
-                        <span class="stars">★★★☆☆</span>
-                    </div>
-                    <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
-                        <span class="stars">★★★☆☆</span>
-                    </div>
-                    <div class="rating-item" role="button" tabindex="0" aria-label="Filtrar por 3 estrelas">
-                        <span class="stars">★★★☆☆</span>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Seção principal (centro) que exibe a lista de estabelecimentos -->
-            <main class="listings">
-                {% if estabelecimentos %}
-                    {% for estabelecimento in estabelecimentos %}
-                    <!-- Item individual na lista de estabelecimentos -->
-                    <div class="listing-item">
-                        <!-- A imagem e o título agora são um link para o perfil do estabelecimento -->
-                        <a href="{{ url_for('perfil_estabelecimento', id=estabelecimento.id_estabelecimento) }}">
-                            <!-- Usa a imagem do perfil do estabelecimento ou uma imagem padrão se não houver -->
-                            <img class="listing-image" src="{{ url_for('static', filename='images/' + (estabelecimento.imagemperfilestab or 'placeholder.png')) }}" alt="Imagem de {{ estabelecimento.nome }}">
-                        </a>
-                        <div class="listing-info">
-                            <div class="listing-title">
-                                <a href="{{ url_for('perfil_estabelecimento', id=estabelecimento.id_estabelecimento) }}">{{ estabelecimento.nome }}</a>
-                            </div>
-                            <!-- Exibe a média de avaliação numérica. A conversão para estrelas pode ser feita depois. -->
-                            <div class="listing-stars" aria-label="Avaliação: {{ estabelecimento.media_avaliacao }} de 5 estrelas">
-                                Nota: {{ "%.1f"|format(estabelecimento.media_avaliacao) }} / 5.0
-                            </div>
+        <form method="GET" action="{{ url_for('comercio') }}" id="filter-form">
+            <!-- A barra de pesquisa principal agora faz parte do formulário de filtros -->
+            <section class="search-section">
+                <div class="search-bar-comercio">
+                    <!-- Botão com o ícone de lupa para iniciar a pesquisa -->
+                    <button type="submit" class="search-button">
+                        <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
+                    </button>
+                    <input type="search" name="q" placeholder="Pesquisar estabelecimentos..." value="{{ search_query or '' }}">
+                    <!-- Container para o botão de filtro e o menu dropdown -->
+                    <div class="filter-container">
+                        <button type="button" class="filter-button" id="filter-toggle-button" aria-label="Filtros" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='images/Filtros.png') }}" alt="Ícone de filtros" class="filter-icon-img">
+                        </button>
+                        <!-- Caixa de opções de filtro (inicialmente oculta) -->
+                        <div class="filter-dropdown" id="filter-dropdown-box" role="menu">
+                            <a href="#" class="filter-dropdown-item" role="menuitem">Melhores Avaliados</a>
+                            <a href="#" class="filter-dropdown-item" role="menuitem">Piores Avaliados</a>
                         </div>
                     </div>
-                    {% endfor %}
-                {% else %}
-                    <p>Nenhum estabelecimento cadastrado ainda.</p>
-                {% endif %}
-            </main>
+                </div>
+            </section>
 
-            <!-- Barra lateral (direita) para exibir um estabelecimento em destaque -->
-            <aside class="highlight">
-                <h2>DESTAQUE</h2>
-                <img class="highlight-image" src="{{ url_for('static', filename='images/bakery.jpeg') }}" alt="Imagem do destaque">
-                <div class="highlight-title">Ristorant</div>
-                <div class="highlight-type">Restaurante</div>
-                <div class="highlight-stars" aria-label="Avaliação: 3 de 5 estrelas" style="color: var(--star-color);">★★★☆☆</div>
-            </aside>
-        </div>
+            <!-- Conteúdo principal organizado em um layout de grade -->
+            <div class="main-content">
+                <!-- Barra lateral (esquerda) para os filtros de pesquisa -->
+                <aside class="sidebar">
+                    <!-- Seção de filtro por localização -->
+                    <div class="location-filter">
+                        <h3>Qual sua localização?</h3>
+                        <div class="cep-search-bar">
+                            <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de lupa" class="cep-search-icon">
+                            <!-- O name="localizacao" conecta com o backend. O value preenche com a busca atual. -->
+                            <input type="text" name="localizacao" placeholder="Digite a cidade ou bairro..." value="{{ location_query or '' }}" onchange="document.getElementById('filter-form').submit();" />
+                        </div>
+                    </div>
+
+                    <!-- Seção de filtros por categorias -->
+                    <div class="categories">
+                        <h3>Categorias</h3>
+                        <div class="filter-grid">
+                            {% for categoria in todas_categorias %}
+                                <!-- Botão que funciona como um checkbox. A classe 'active' é adicionada se o filtro estiver selecionado. -->
+                                <button type="button"
+                                        class="filter-option {% if categoria.id_categoria|string in selected_categories_ids %}active{% endif %}"
+                                        onclick="toggleCheckboxAndSubmit('cat-{{ categoria.id_categoria }}')">
+                                    {{ categoria.nome_categoria }}
+                                </button>
+                                <!-- Checkbox oculto que armazena o estado do filtro -->
+                                <input type="checkbox" id="cat-{{ categoria.id_categoria }}" name="categoria" value="{{ categoria.id_categoria }}"
+                                       {% if categoria.id_categoria|string in selected_categories_ids %}checked{% endif %} style="display: none;">
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Seção de filtros por avaliação (estrelas) -->
+                    <div class="ratings">
+                        <h3>Notas (a partir de)</h3>
+                        {% for i in range(5, 0, -1) %}
+                        <!-- Div clicável que funciona como um botão de rádio. A classe 'active' é adicionada se o filtro estiver selecionado. -->
+                        <div class="rating-item {% if selected_rating == i %}active{% endif %}"
+                             role="button"
+                             onclick="selectRadioAndSubmit('nota-{{ i }}')">
+                            <span class="stars">
+                                {% for _ in range(i) %}★{% endfor %}{% for _ in range(5-i) %}☆{% endfor %}
+                            </span>
+                        </div>
+                        <!-- Input de rádio oculto que armazena o estado do filtro -->
+                        <input type="radio" id="nota-{{ i }}" name="nota" value="{{ i }}"
+                               {% if selected_rating == i %}checked{% endif %} style="display: none;">
+                        {% endfor %}
+                    </div>
+
+                    <a href="{{ url_for('comercio') }}" class="clear-filter-btn">Limpar Filtros</a>
+                </aside>
+
+                <!-- Seção principal (centro) que exibe a lista de estabelecimentos -->
+                <main class="listings">
+                    {% if estabelecimentos %}
+                        {% for estabelecimento in estabelecimentos %}
+                        <!-- Item individual na lista de estabelecimentos -->
+                        <div class="listing-item" style="cursor: pointer;" onclick="location.href='{{ url_for('perfil_estabelecimento', id=estabelecimento.id_estabelecimento) }}'">
+                            <img class="listing-image" src="{{ url_for('static', filename='images/profile_pics/' + (estabelecimento.imagemperfilestab or 'placeholder.png')) }}" alt="Imagem de {{ estabelecimento.nome }}">
+                            <div class="listing-info">
+                                <div class="listing-title">
+                                    <a href="{{ url_for('perfil_estabelecimento', id=estabelecimento.id_estabelecimento) }}">{{ estabelecimento.nome }}</a>
+                                </div>
+                                <div class="listing-type">{{ (estabelecimento.categorias[0].nome_categoria if estabelecimento.categorias) or 'Comércio' }}</div>
+                                <div class="listing-stars" title="Nota: {{ '%.1f'|format(estabelecimento.media_avaliacao) }}">
+                                    {% set nota_int = estabelecimento.media_avaliacao|round(0, 'floor')|int %}
+                                    {% set tem_meia_estrela = (estabelecimento.media_avaliacao - nota_int) >= 0.5 %}
+                                    {% for _ in range(nota_int) %}★{% endfor %}
+                                    {% if tem_meia_estrela and nota_int < 5 %}✬{% endif %}
+                                    {% for _ in range(5 - nota_int - (1 if tem_meia_estrela else 0)) %}☆{% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Nenhum estabelecimento encontrado com os filtros aplicados.</p>
+                    {% endif %}
+                </main>
+
+                <!-- Barra lateral (direita) para exibir um estabelecimento em destaque -->
+                <aside class="highlight">
+                    <h2>EM DESTAQUE</h2>
+                    {% if estabelecimento_destaque %}
+                        <a href="{{ url_for('perfil_estabelecimento', id=estabelecimento_destaque.id_estabelecimento) }}" style="text-decoration: none; color: inherit;">
+                            <img class="highlight-image" src="{{ url_for('static', filename='images/profile_pics/' + (estabelecimento_destaque.imagemperfilestab or 'placeholder.png')) }}" alt="Imagem de {{ estabelecimento_destaque.nome }}">
+                            <div class="highlight-title">{{ estabelecimento_destaque.nome }}</div>
+                            <div class="highlight-type">{{ (estabelecimento_destaque.categorias[0].nome_categoria if estabelecimento_destaque.categorias) or 'Comércio' }}</div>
+                        <div class="highlight-stars" title="Nota: {{ '%.1f'|format(estabelecimento_destaque.media_avaliacao) }}">
+                            {% set nota_int_destaque = estabelecimento_destaque.media_avaliacao|round(0, 'floor')|int %}
+                            {% set tem_meia_estrela_destaque = (estabelecimento_destaque.media_avaliacao - nota_int_destaque) >= 0.5 %}
+                            {% for _ in range(nota_int_destaque) %}★{% endfor %}
+                            {% if tem_meia_estrela_destaque and nota_int_destaque < 5 %}✬{% endif %}
+                            {% for _ in range(5 - nota_int_destaque - (1 if tem_meia_estrela_destaque else 0)) %}☆{% endfor %}
+                        </div>
+                        </a>
+                    {% else %}
+                        <p>Nenhum estabelecimento em destaque no momento.</p>
+                    {% endif %}
+                </aside>
+            </div>
+        </form>
     </div>
     <!-- Rodapé da página, reutilizado de outras páginas -->
     <footer class="main-footer">
@@ -250,6 +262,20 @@
                     }
                 }
             });
+        }
+    </script>
+
+    <!-- Scripts para os filtros da barra lateral -->
+    <script>
+        function toggleCheckboxAndSubmit(checkboxId) {
+            const checkbox = document.getElementById(checkboxId);
+            checkbox.checked = !checkbox.checked; // Inverte o estado do checkbox
+            document.getElementById('filter-form').submit();
+        }
+
+        function selectRadioAndSubmit(radioId) {
+            document.getElementById(radioId).checked = true; // Marca o radio button
+            document.getElementById('filter-form').submit();
         }
     </script>
 </body>

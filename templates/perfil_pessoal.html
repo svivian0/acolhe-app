@@ -44,8 +44,10 @@
             <div class="user-menu">
                 <!-- Ícone de perfil que leva para a página de login se não estiver logado -->
                 <a href="{{ url_for('perfil_pessoal') if current_user.is_authenticated else url_for('login') }}" aria-label="Login ou Perfil">
-                    {% if current_user.is_authenticated and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
+                    {% if current_user.is_authenticated and current_user.tipo_usuario == 'pessoal' and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
                         <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.perfil_pessoal.imagemperfil) }}" alt="Ícone do Perfil" class="icon user-icon">
+                    {% elif current_user.is_authenticated and current_user.tipo_usuario == 'empresarial' and current_user.estabelecimento and current_user.estabelecimento.imagemperfilestab %}
+                        <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.estabelecimento.imagemperfilestab) }}" alt="Ícone do Perfil" class="icon user-icon">
                     {% else %}
                         <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
                     {% endif %}

@@ -6,6 +6,8 @@
     <title>{{ titulo }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/perfilestab.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <!-- Adicionando link para a folha de estilos principal para herdar estilos do header e footer -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/acolhe_app_home_styles.css') }}">
 </head>
 <body>
 
@@ -16,7 +18,6 @@
             <!-- Container para o logotipo -->
             <div class="logo-container">
                 <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="logo">
-                <img src="{{ url_for('static', filename='images/separadorvertical.png') }}" id="sepvertical" alt="">
             </div>
 
             <!-- Seção de Navegação Principal. -->
@@ -47,43 +48,96 @@
                 <!-- Menu de usuário com ícones de perfil e opções -->
                 <div class="user-menu">
                     <a href="{{ url_for('perfil_pessoal') if current_user.is_authenticated else url_for('login') }}" aria-label="Login ou Perfil">
-                        {% if current_user.is_authenticated and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
+                        {% if current_user.is_authenticated and current_user.tipo_usuario == 'pessoal' and current_user.perfil_pessoal and current_user.perfil_pessoal.imagemperfil %}
                             <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.perfil_pessoal.imagemperfil) }}" alt="Ícone do Perfil" class="icon user-icon">
+                        {% elif current_user.is_authenticated and current_user.tipo_usuario == 'empresarial' and current_user.estabelecimento and current_user.estabelecimento.imagemperfilestab %}
+                            <img src="{{ url_for('static', filename='images/profile_pics/' + current_user.estabelecimento.imagemperfilestab) }}" alt="Ícone do Perfil" class="icon user-icon">
                         {% else %}
                             <img src="{{ url_for('static', filename='images/IconUser.png') }}" alt="Ícone do Perfil" class="icon user-icon">
                         {% endif %}
                     </a>
-                    <!-- Ícone de menu "sanduíche" substituído por uma imagem -->
-                    <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
+                    <div class="user-dropdown-container">
+                        <button id="user-menu-button" class="icon-button" aria-label="Menu de opções" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
+                        </button>
+                        <div id="user-menu-dropdown" class="user-dropdown" role="menu">
+                            {% if current_user.is_authenticated %}
+                                <!-- Links para usuários LOGADOS -->
+                                <a href="#" class="user-dropdown-item" role="menuitem">Olá, {{ current_user.nome }}!</a>
+                                <a href="{{ url_for('perfil_pessoal') }}" class="user-dropdown-item" role="menuitem">Meu Perfil</a>
+                                <a href="{{ url_for('logout') }}" class="user-dropdown-item" role="menuitem">Sair</a>
+                            {% else %}
+                                <!-- Links para VISITANTES (não logados) -->
+                                <a href="{{ url_for('login') }}" class="user-dropdown-item" role="menuitem">Login</a>
+                                <a href="{{ url_for('cadastro_html') }}" class="user-dropdown-item" role="menuitem">Cadastrar</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
 
-    <div class="user">
-    <img id="imgestabc" 
-    src="{{ url_for('static', filename='images/' + (estabelecimento.imagemperfilestab or 'placeholder.png')) }}" 
-    alt="Imagem de {{ estabelecimento.nome }}">
-    
-    <div class="user-info">
-        <h1 id="NomeLocal">{{ estabelecimento.nome }}</h1>
-    
-        <h2 id="TipoLocal">{{ estabelecimento.razao_social }}</h2>
-    
-        <span id="Nota" class="stars">Nota Média: {{ "%.1f"|format(estabelecimento.media_avaliacao) }} / 5.0</span>
-    
-        <p id="descricao" class="texto">{{ estabelecimento.descricao or 'Nenhuma descrição fornecida.' }}</p>
-        <p id="endereco" class="texto"><b>Endereço:</b> {{ estabelecimento.endereco }}</p>
-    </div>
-    </div>
+    <div class="profile-container">
+        <div class="profile-main-content">
+            <!-- Coluna da Esquerda: Foto e Botões de Contato -->
+            <div class="profile-left-column">
+                <img class="profile-pic"
+                     src="{{ url_for('static', filename='images/profile_pics/' + (estabelecimento.imagemperfilestab or 'placeholder.png')) }}" 
+                     alt="Imagem de {{ estabelecimento.nome }}">
+                
+                <!-- Seção de botões de contato -->
+                <div class="contact-buttons" style="margin-top: 15px;">
+                    <a href="https://wa.me/55{{ estabelecimento.telefone|replace('[^0-9]', '') }}" target="_blank" class="contact-btn whatsapp">WhatsApp</a>
+                    <a href="tel:{{ estabelecimento.telefone }}" class="contact-btn phone">Telefone</a>
+                    <!-- O botão do Instagram agora usa o link do banco de dados. Se não houver link, ele não será exibido. -->
+                    {% if estabelecimento.link_instagram %}
+                        <a href="{{ estabelecimento.link_instagram }}" target="_blank" class="contact-btn instagram">Instagram</a>
+                    {% endif %}
+                </div>
+            </div>
 
+            <!-- Coluna da Direita: Informações do Estabelecimento -->
+            <div class="profile-right-column">
+                <h1 class="establishment-name">{{ estabelecimento.nome }}</h1>
+                <h2 class="establishment-type">{{ estabelecimento.razao_social }}</h2>
+                <div class="rating-info">
+                    <span class="stars">Nota Média: {{ "%.1f"|format(estabelecimento.media_avaliacao) }} / 5.0</span>
+                </div>
+                <p class="description">{{ estabelecimento.descricao or 'Nenhuma descrição fornecida.' }}</p>
+                <p class="address"><b>Endereço:</b> {{ estabelecimento.endereco }}</p>
+            </div>
+        </div>
+
+        <!-- Galeria de Fotos -->
+        <div class="photo-gallery">
+            <h3>Galeria</h3>
+            <div class="gallery-images">
+                <!-- Imagem 1 da Galeria -->
+                <img src="{{ url_for('static', filename='images/profile_pics/' + (estabelecimento.imagem_galeria1 or 'placeholder.png')) }}" 
+                     alt="Foto 1 do estabelecimento {{ estabelecimento.nome }}">
+                <!-- Imagem 2 da Galeria -->
+                <img src="{{ url_for('static', filename='images/profile_pics/' + (estabelecimento.imagem_galeria2 or 'placeholder.png')) }}" 
+                     alt="Foto 2 do estabelecimento {{ estabelecimento.nome }}">
+                <!-- Imagem 3 da Galeria -->
+                <img src="{{ url_for('static', filename='images/profile_pics/' + (estabelecimento.imagem_galeria3 or 'placeholder.png')) }}" 
+                     alt="Foto 3 do estabelecimento {{ estabelecimento.nome }}">
+            </div>
+        </div>
+    </div>
+    
     <section class="coment">
         <h2>Avaliações</h2>
 
-        <!-- Formulário para deixar uma avaliação -->
-        <div class="comment-box evaluation-form">
-            <h3>Deixe sua avaliação</h3>
+        <!-- Botão para mostrar/ocultar o formulário de avaliação -->
+        <div class="evaluation-toggle">
+            <button id="toggle-evaluation-form" class="submit-btn">Deixar uma Avaliação</button>
+        </div>
+
+        <!-- Formulário para deixar uma avaliação (inicialmente oculto) -->
+        <div id="evaluation-form-container" class="comment-box evaluation-form" style="display: none;">
+            <h3>Sua avaliação</h3>
             <form method="POST">
                 <div class="form-group">
                     <label for="nota">Nota (1 a 5):</label>
@@ -123,25 +177,51 @@
         {% endif %}
     </section>
 
-        <footer class="rodape">
-        <div class="rodape-container">
-            <div class="rodape-item reclamacao">
+    <footer class="main-footer">
+        <!-- Container para o conteúdo do rodapé -->
+        <div class="footer-content">
+            <div class="footer-right">
                 <p>Possui alguma reclamação?</p>
-                <p>Mande um E-mail!</p>
-                <a href="mailto:acolhe.app@gmail.com" class="email-link">acolhe.app@gmail.com</a>
+                <a href="mailto:acolhe.app@gmail.com" class="email-button">
+                    acolhe.app@gmail.com
+                </a>
             </div>
-
-            <div class="rodape-item logo">
-                <img src="{{ url_for('static', filename='images/logosemtexto.png') }}" alt="Logo do Acolhe App" class="logo-imagem">
+            <div class="footer-center">
+                <img src="{{ url_for('static', filename='images/Acolhe_simbolo.png') }}" alt="Símbolo Acolhe App" class="footer-logo">
             </div>
-
-            <div class="rodape-item instagram">
+            <div class="footer-left">
                 <p>Nos siga no Instagram!</p>
-                <a href="#" class="instagram-link">@Acolhe_App</a>
+                <a href="https://www.instagram.com/acolhe_app?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank">
+                    <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Ícone do Instagram" class="social-icon">@Acolhe_App
+                </a>
             </div>
         </div>
     </footer>
 
+    <script>
+        // Script para o menu de usuário
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
 
+        if (userMenuButton) {
+            userMenuButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isExpanded = userMenuDropdown.classList.toggle('active');
+                userMenuButton.setAttribute('aria-expanded', isExpanded);
+            });
+        }
+
+        // Script para mostrar/ocultar o formulário de avaliação
+        const toggleButton = document.getElementById('toggle-evaluation-form');
+        const formContainer = document.getElementById('evaluation-form-container');
+
+        if (toggleButton && formContainer) {
+            toggleButton.addEventListener('click', () => {
+                const isVisible = formContainer.style.display === 'block';
+                formContainer.style.display = isVisible ? 'none' : 'block';
+                toggleButton.textContent = isVisible ? 'Deixar uma Avaliação' : 'Fechar';
+            });
+        }
+    </script>
 </body>
 </html>     

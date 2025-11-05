@@ -9,6 +9,7 @@ CREATE TABLE usuarios (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+SELECT * FROM usuarios;
 
 CREATE TABLE perfis_pessoais (
     id_perfil_pessoal INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,8 +31,13 @@ CREATE TABLE estabelecimentos (
     cnpj VARCHAR(18) NOT NULL UNIQUE,
     endereco TEXT NOT NULL,
     telefone VARCHAR(20),
+    link_instagram VARCHAR(255),
     descricao TEXT,
     imagemperfilestab VARCHAR(200),
+    imagem_galeria1 VARCHAR(200),
+    imagem_galeria2 VARCHAR(200),
+    imagem_galeria3 VARCHAR(200),
+    link_instagram VARCHAR(255),
     media_avaliacao DECIMAL(2,1) DEFAULT 0.0,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
@@ -42,6 +48,7 @@ CREATE TABLE categorias (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nome_categoria VARCHAR(100) NOT NULL UNIQUE
 );
+
 
 
 CREATE TABLE estabelecimento_categoria (

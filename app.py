@@ -83,6 +83,10 @@ class Estabelecimento(db.Model):
     telefone = db.Column(db.String(20))
     descricao = db.Column(db.Text)
     imagemperfilestab = db.Column(db.String(200))
+    imagem_galeria1 = db.Column(db.String(200))
+    imagem_galeria2 = db.Column(db.String(200))
+    imagem_galeria3 = db.Column(db.String(200))
+    link_instagram = db.Column(db.String(255))
     media_avaliacao = db.Column(db.Numeric(2, 1), default=0.0)
     # Relacionamentos Many-to-Many
     categorias = db.relationship('Categoria', secondary=estabelecimento_categoria, lazy='subquery',
@@ -245,9 +249,42 @@ def cadastro_html():
 @app.route('/comercio')
 def comercio():
     # Busca TODOS os estabelecimentos cadastrados no banco de dados.
-    estabelecimentos = Estabelecimento.query.all()
-    # Envia a lista de estabelecimentos para o template renderizar.
-    return render_template('comercio.html', titulo="Comércio", estabelecimentos=estabelecimentos)
+    # Pega os parâmetros de busca e filtro da URL
+    search_query = request.args.get('q', '')
+    selected_categories_ids = request.args.getlist('categoria') # Usa getlist para múltiplos valores
+    selected_rating = request.args.get('nota', type=float)
+    location_query = request.args.get('localizacao', '')
+
+    # Começa com uma query base que busca todos os estabelecimentos
+    query = Estabelecimento.query
+
+    # Se houver um termo de busca, filtra pelo nome (case-insensitive)
+    if search_query:
+        query = query.filter(Estabelecimento.nome.ilike(f'%{search_query}%'))
+
+    # Filtra pela localização (endereço)
+    if location_query:
+        query = query.filter(Estabelecimento.endereco.ilike(f'%{location_query}%'))
+
+    # Filtra por categorias selecionadas
+    if selected_categories_ids:
+        # Filtra estabelecimentos que pertencem a QUALQUER uma das categorias selecionadas
+        query = query.join(Estabelecimento.categorias).filter(Categoria.id_categoria.in_(selected_categories_ids))
+
+    # Filtra por nota (avaliação)
+    if selected_rating:
+        # Filtra estabelecimentos com nota média maior ou igual à nota selecionada
+        query = query.filter(Estabelecimento.media_avaliacao >= selected_rating)
+
+    # Executa a query final, garantindo que não haja duplicatas se um estabelecimento pertencer a múltiplas categorias selecionadas
+    estabelecimentos = query.distinct().all()
+
+    # Busca o estabelecimento com a maior média de avaliação para destacar
+    estabelecimento_destaque = Estabelecimento.query.order_by(Estabelecimento.media_avaliacao.desc()).first()
+    # Busca todas as categorias para exibir na barra de filtros
+    todas_categorias = Categoria.query.order_by(Categoria.nome_categoria).all()
+
+    return render_template('comercio.html', titulo="Comércio", estabelecimentos=estabelecimentos, search_query=search_query, estabelecimento_destaque=estabelecimento_destaque, todas_categorias=todas_categorias, selected_categories_ids=selected_categories_ids, selected_rating=selected_rating, location_query=location_query)
 
 # Rota para a página Sobre Nós
 @app.route('/sobre-nos')
@@ -290,7 +327,7 @@ def perfil_estabelecimento(id):
 @login_required # Garante que apenas usuários logados possam acessar
 def perfil_pessoal():
     # Verifica o tipo de usuário e direciona para a lógica e template corretos
-    if current_user.tipo_usuario == 'empresarial':
+    if current_user.tipo_usuario == 'empresarial': # Lógica para usuário empresarial
         estabelecimento = current_user.estabelecimento
         if not estabelecimento:
             flash('Perfil de estabelecimento não encontrado.', 'danger')
@@ -302,6 +339,7 @@ def perfil_pessoal():
             estabelecimento.endereco = request.form.get('endereco')
             estabelecimento.telefone = request.form.get('telefone')
             estabelecimento.descricao = request.form.get('descricao')
+            estabelecimento.link_instagram = request.form.get('link_instagram')
 
             # Lógica de upload da imagem do estabelecimento
             if 'imagemperfilestab' in request.files:
@@ -315,6 +353,25 @@ def perfil_pessoal():
                     unique_filename = f"estab_{estabelecimento.id_estabelecimento}_{filename}"
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
                     estabelecimento.imagemperfilestab = unique_filename
+            
+            # Lógica de upload para as imagens da galeria
+            for i in range(1, 4):
+                file_key = f'imagem_galeria{i}'
+                if file_key in request.files:
+                    file = request.files[file_key]
+                    if file.filename != '' and allowed_file(file.filename):
+                        # Garante que o diretório de upload exista
+                        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+                        
+                        # Remove a imagem antiga, se existir
+                        old_image = getattr(estabelecimento, file_key)
+                        if old_image and os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], old_image)):
+                            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], old_image))
+                        
+                        filename = secure_filename(file.filename)
+                        unique_filename = f"estab_{estabelecimento.id_estabelecimento}_gallery{i}_{filename}"
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+                        setattr(estabelecimento, file_key, unique_filename)
 
             # Atualiza as categorias (Many-to-Many)
             ids_categorias_selecionadas = request.form.getlist('categorias')
@@ -337,7 +394,7 @@ def perfil_pessoal():
                                todas_categorias=todas_categorias,
                                todas_acessibilidades=todas_acessibilidades)
 
-    else: # Se for usuário 'pessoal'
+    elif current_user.tipo_usuario == 'pessoal': # Lógica para usuário pessoal
         perfil = current_user.perfil_pessoal
 
         if request.method == 'POST':
@@ -377,6 +434,10 @@ def perfil_pessoal():
         # GET Request para usuário pessoal
         avaliacoes_usuario = Avaliacao.query.filter_by(id_usuario=current_user.id_usuario).order_by(Avaliacao.data_avaliacao.desc()).all()
         return render_template('perfil_pessoal.html', titulo="Meu Perfil", avaliacoes=avaliacoes_usuario)
+
+    else: # Caso o tipo de usuário seja desconhecido
+        flash('Tipo de usuário inválido.', 'danger')
+        return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
