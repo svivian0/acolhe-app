@@ -56,7 +56,7 @@
                 </a>
                 <!-- Container do menu de usuário para posicionamento do dropdown -->
                 <div class="user-dropdown-container">
-                    <button id="user-menu-button" class="icon-button" aria-label="Menu de opções" aria-haspopup="true" aria-expanded="false">
+                    <button id="user-menu-button" class="icon-button" type="button" aria-label="Menu de opções" aria-haspopup="true" aria-expanded="false">
                         <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
                     </button>
                     <div id="user-menu-dropdown" class="user-dropdown" role="menu">
@@ -161,10 +161,10 @@
                                 </div>
                                 <div class="listing-type">{{ (estabelecimento.categorias[0].nome_categoria if estabelecimento.categorias) or 'Comércio' }}</div>
                                 <div class="listing-stars" title="Nota: {{ '%.1f'|format(estabelecimento.media_avaliacao) }}">
-                                    {% set nota_int = estabelecimento.media_avaliacao|round(0, 'floor')|int %}
-                                    {% set tem_meia_estrela = (estabelecimento.media_avaliacao - nota_int) >= 0.5 %}
-                                    {% for _ in range(nota_int) %}★{% endfor %}
-                                    {% if tem_meia_estrela and nota_int < 5 %}✬{% endif %}
+                                    {% set nota_int = estabelecimento.media_avaliacao|round(0, 'floor')|int -%}
+                                    {% set tem_meia_estrela = (estabelecimento.media_avaliacao - nota_int) >= 0.5 -%}
+                                    {% for _ in range(nota_int) %}★{% endfor -%}
+                                    {% if tem_meia_estrela and nota_int < 5 %}✬{% endif -%}
                                     {% for _ in range(5 - nota_int - (1 if tem_meia_estrela else 0)) %}☆{% endfor %}
                                 </div>
                             </div>
@@ -183,13 +183,13 @@
                             <img class="highlight-image" src="{{ url_for('static', filename='images/profile_pics/' + (estabelecimento_destaque.imagemperfilestab or 'placeholder.png')) }}" alt="Imagem de {{ estabelecimento_destaque.nome }}">
                             <div class="highlight-title">{{ estabelecimento_destaque.nome }}</div>
                             <div class="highlight-type">{{ (estabelecimento_destaque.categorias[0].nome_categoria if estabelecimento_destaque.categorias) or 'Comércio' }}</div>
-                        <div class="highlight-stars" title="Nota: {{ '%.1f'|format(estabelecimento_destaque.media_avaliacao) }}">
-                            {% set nota_int_destaque = estabelecimento_destaque.media_avaliacao|round(0, 'floor')|int %}
-                            {% set tem_meia_estrela_destaque = (estabelecimento_destaque.media_avaliacao - nota_int_destaque) >= 0.5 %}
-                            {% for _ in range(nota_int_destaque) %}★{% endfor %}
-                            {% if tem_meia_estrela_destaque and nota_int_destaque < 5 %}✬{% endif %}
-                            {% for _ in range(5 - nota_int_destaque - (1 if tem_meia_estrela_destaque else 0)) %}☆{% endfor %}
-                        </div>
+                            <div class="highlight-stars" title="Nota: {{ '%.1f'|format(estabelecimento_destaque.media_avaliacao) }}">
+                                {% set nota_int_destaque = estabelecimento_destaque.media_avaliacao|round(0, 'floor')|int -%}
+                                {% set tem_meia_estrela_destaque = (estabelecimento_destaque.media_avaliacao - nota_int_destaque) >= 0.5 -%}
+                                {% for _ in range(nota_int_destaque) %}★{% endfor -%}
+                                {% if tem_meia_estrela_destaque and nota_int_destaque < 5 %}✬{% endif -%}
+                                {% for _ in range(5 - nota_int_destaque - (1 if tem_meia_estrela_destaque else 0)) %}☆{% endfor %}
+                            </div>
                         </a>
                     {% else %}
                         <p>Nenhum estabelecimento em destaque no momento.</p>
@@ -274,8 +274,14 @@
         }
 
         function selectRadioAndSubmit(radioId) {
-            document.getElementById(radioId).checked = true; // Marca o radio button
-            document.getElementById('filter-form').submit();
+            const radio = document.getElementById(radioId);
+            // Se o filtro de nota clicado já estiver ativo, desmarca. Senão, marca.
+            if (radio.checked) {
+                radio.checked = false;
+            } else {
+                radio.checked = true;
+            }
+            document.getElementById('filter-form').submit(); // Envia o formulário para aplicar o filtro
         }
     </script>
 </body>

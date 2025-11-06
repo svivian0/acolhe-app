@@ -11,12 +11,19 @@
 }
 
 /* --- ESTILOS GERAIS --- */
-body {
-    font-family: var(--font-family);
+html, body {
+    height: 100%; /* Garante que html e body ocupem 100% da altura da viewport */
     margin: 0;
     padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
     background-color: var(--background-color);
     color: var(--text-color);
+    display: flex; /* Habilita o Flexbox */
+    flex-direction: column; /* Organiza os filhos em coluna */
+    min-height: 100vh; /* Garante que o body tenha pelo menos 100% da altura da viewport */
 }
 
 a {
@@ -330,6 +337,7 @@ a {
     background-color: var(--primary-color);
     color: #fff; /* Cor do texto alterada para branco */
     padding: 20px 0;
+    margin-top: auto; /* Empurra o rodapé para a parte inferior, ocupando o espaço restante */
     position: relative;
 }
 

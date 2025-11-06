@@ -90,7 +90,7 @@
                 <!-- Seção de botões de contato -->
                 <div class="contact-buttons" style="margin-top: 15px;">
                     <a href="https://wa.me/55{{ estabelecimento.telefone|replace('[^0-9]', '') }}" target="_blank" class="contact-btn whatsapp">WhatsApp</a>
-                    <a href="tel:{{ estabelecimento.telefone }}" class="contact-btn phone">Telefone</a>
+                    <a href="#" onclick="copyPhoneNumber('{{ estabelecimento.telefone }}', this); return false;" class="contact-btn phone">Telefone</a>
                     <!-- O botão do Instagram agora usa o link do banco de dados. Se não houver link, ele não será exibido. -->
                     {% if estabelecimento.link_instagram %}
                         <a href="{{ estabelecimento.link_instagram }}" target="_blank" class="contact-btn instagram">Instagram</a>
@@ -163,7 +163,11 @@
                     {% endif %}
                     <div class="comment-user-info">
                         <span class="comment-user-name">{{ avaliacao.usuario.nome }}</span>
-                        <span class="comment-stars">Nota: {{ "%.1f"|format(avaliacao.nota_geral) }}</span>
+                        <span class="comment-stars" title="Nota: {{ '%.1f'|format(avaliacao.nota_geral) }}">
+                            {% set nota_int = avaliacao.nota_geral|round(0, 'floor')|int -%}
+                            {% for _ in range(nota_int) %}★{% endfor -%}
+                            {% for _ in range(5 - nota_int) %}☆{% endfor %}
+                        </span>
                     </div>
                 </div>
                 <p class="comment-text">{{ avaliacao.comentario }}</p>
@@ -220,6 +224,33 @@
                 const isVisible = formContainer.style.display === 'block';
                 formContainer.style.display = isVisible ? 'none' : 'block';
                 toggleButton.textContent = isVisible ? 'Deixar uma Avaliação' : 'Fechar';
+            });
+        }
+
+        // Script para copiar o número de telefone
+        function copyPhoneNumber(phoneNumber, linkElement) {
+            if (!phoneNumber) {
+                alert('Número de telefone não disponível para cópia.');
+                return;
+            }
+
+            // Previne múltiplos cliques enquanto a cópia está em andamento
+            if (linkElement.classList.contains('disabled')) return;
+
+            // Usa a API de área de transferência do navegador
+            navigator.clipboard.writeText(phoneNumber).then(() => {
+                // Feedback de sucesso para o usuário
+                const originalText = linkElement.textContent;
+                linkElement.textContent = 'Copiado!';
+                linkElement.classList.add('disabled'); // "Desabilita" o link visualmente e funcionalmente
+
+                setTimeout(() => {
+                    linkElement.textContent = originalText;
+                    linkElement.classList.remove('disabled');
+                }, 2000); // Volta ao texto original após 2 segundos
+            }).catch(err => {
+                console.error('Erro ao copiar o número: ', err);
+                alert('Não foi possível copiar o número. Tente manualmente.');
             });
         }
     </script>

@@ -287,6 +287,13 @@ body {
     transform: translateY(-1px);
 }
 
+/* Estilo para o botão de filtro QUANDO ATIVO */
+.filter-option.active {
+    background-color: var(--primary-color); /* Usa a cor primária definida no CSS principal */
+    color: white; /* Texto branco para contraste */
+    transform: translateY(0); /* Remove o efeito de hover para o estado ativo */
+}
+
 /* Seção de categorias */
 .categories {
     margin-bottom: 30px;
@@ -326,6 +333,13 @@ body {
 
 .rating-item:hover {
     transform: translateX(3px);
+}
+
+/* Estilo para o item de avaliação QUANDO ATIVO */
+.rating-item.active {
+    background-color: #e0e0e0; /* Um cinza claro para destacar a seleção */
+    border-radius: 6px; /* Bordas arredondadas para um visual mais suave */
+    padding: 4px 8px; /* Adiciona um preenchimento interno */
 }
 
 /* Estilo para as estrelas */
@@ -695,6 +709,26 @@ body {
     .footer-social {
         font-size: 14px;
     }
+}
+
+/* --- Botão Limpar Filtros --- */
+.clear-filter-btn {
+    display: block; /* Garante que o link ocupe a largura total disponível na sidebar */
+    text-align: center;
+    margin-top: 20px; /* Espaço acima do botão */
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--primary-color); /* Borda com a cor primária do site */
+    color: var(--primary-color); /* Cor do texto igual à da borda */
+    background-color: transparent; /* Fundo transparente */
+    transition: all 0.3s ease; /* Transição suave para o efeito hover */
+}
+
+.clear-filter-btn:hover {
+    background-color: var(--primary-color); /* Preenche o fundo ao passar o mouse */
+    color: white; /* Muda a cor do texto para branco */
 }
 
 @media (max-width: 320px) {

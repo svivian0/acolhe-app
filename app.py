@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
+from sqlalchemy import func
 import os
 import re # Importa o módulo de expressões regulares
 
@@ -317,6 +318,14 @@ def perfil_estabelecimento(id):
             flash('Obrigado pela sua avaliação!', 'success')
         
         db.session.commit()
+
+        # Recalcula a média de avaliações para o estabelecimento
+        media = db.session.query(func.avg(Avaliacao.nota_geral)).filter(Avaliacao.id_estabelecimento == id).scalar()
+        
+        # Atualiza a média no objeto estabelecimento (se a média não for None)
+        estabelecimento.media_avaliacao = round(media, 1) if media is not None else 0.0
+        db.session.commit()
+
         return redirect(url_for('perfil_estabelecimento', id=id))
 
     # Envia o objeto 'estabelecimento' para o template.
