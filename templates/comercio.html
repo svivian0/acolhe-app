@@ -60,7 +60,12 @@
                         <img src="{{ url_for('static', filename='images/Barrinhasp.png') }}" alt="Menu de opções" class="icon menu-icon">
                     </button>
                     <div id="user-menu-dropdown" class="user-dropdown" role="menu">
-                        {% if not current_user.is_authenticated %}
+                        {% if current_user.is_authenticated %}
+                            <!-- Links para usuários LOGADOS -->
+                            <a href="#" class="user-dropdown-item" role="menuitem">Olá, {{ current_user.nome }}!</a>
+                            <a href="{{ url_for('perfil_pessoal') }}" class="user-dropdown-item" role="menuitem">Meu Perfil</a>
+                            <a href="{{ url_for('logout') }}" class="user-dropdown-item" role="menuitem">Sair</a>
+                        {% else %}
                             <!-- Links para VISITANTES (não logados) -->
                             <a href="{{ url_for('login') }}" class="user-dropdown-item" role="menuitem">Login</a>
                             <a href="{{ url_for('cadastro_html') }}" class="user-dropdown-item" role="menuitem">Cadastrar</a>
