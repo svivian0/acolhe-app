@@ -15,7 +15,10 @@
     <!-- Links para as folhas de estilo usando url_for -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/acolhe_app_home_styles.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/comercio_styles.css') }}" />
+    <!-- Adicionando CSS do Cropper.js via CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_pessoal.css') }}" />
+
 </head>
 <body>
     <!-- Header -->
@@ -96,6 +99,9 @@
         <main class="main-content">
             <!-- Adicionado enctype="multipart/form-data" para permitir upload de arquivos -->
             <form method="POST" action="{{ url_for('perfil_pessoal') }}" enctype="multipart/form-data">
+                <!-- Input escondido para armazenar a imagem recortada em Base64 -->
+                <input type="hidden" name="cropped_image" id="cropped_image_data">
+
                 <section class="content-box">
                     <h2>SOBRE MIM</h2>
                     <!-- Campo para inserir a localização -->
@@ -164,6 +170,24 @@
         </div>
     </footer>
 
+    <!-- Modal para o Cropper.js -->
+    <div id="cropper-modal" class="cropper-modal-container">
+        <div class="cropper-modal-content">
+            <h2>Ajuste sua Foto de Perfil</h2>
+            <div class="cropper-image-container">
+                <img id="image-to-crop" src="" alt="Imagem para recortar">
+            </div>
+            <div class="cropper-modal-actions">
+                <button type="button" id="cancel-crop-btn" class="remove-button">Cancelar</button>
+                <button type="button" id="crop-and-save-btn" class="save-button">Salvar Foto</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Adicionando JS do Cropper.js via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
     <!-- Script para controlar o menu dropdown do filtro -->
     <script>
         // Script para o menu de usuário
@@ -194,6 +218,82 @@
         if (filterButton) {
             // O código para o dropdown de filtro pode ser adicionado aqui se necessário no futuro.
         }
+
+        // --- LÓGICA DO CROPPER.JS ---
+        const modal = document.getElementById('cropper-modal');
+        const imageToCrop = document.getElementById('image-to-crop');
+        const fileInput = document.getElementById('imagemperfil');
+        const cropAndSaveBtn = document.getElementById('crop-and-save-btn');
+        const cancelBtn = document.getElementById('cancel-crop-btn');
+        const hiddenInput = document.getElementById('cropped_image_data');
+        let cropper;
+
+        // 1. Quando o usuário seleciona um arquivo
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // Mostra o modal e a imagem
+                    imageToCrop.src = reader.result;
+                    modal.style.display = 'flex';
+
+                    // Destrói qualquer instância antiga do cropper
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
+                    // Inicializa o Cropper.js
+                    cropper = new Cropper(imageToCrop, {
+                        aspectRatio: 1 / 1, // Proporção quadrada
+                        viewMode: 1,        // Restringe a área de corte aos limites da imagem
+                        background: false,  // Remove o fundo quadriculado
+                        autoCropArea: 0.8,  // A área de corte inicial ocupa 80% da imagem
+                        responsive: true,
+                        movable: true,
+                        zoomable: true,
+                        rotatable: false,
+                        scalable: false,
+                    });
+                };
+                reader.readAsDataURL(files[0]);
+            }
+            // Limpa o valor do input para permitir selecionar o mesmo arquivo novamente
+            e.target.value = '';
+        });
+
+        // 2. Quando o usuário clica em "Salvar Foto" no modal
+        cropAndSaveBtn.addEventListener('click', () => {
+            if (cropper) {
+                // Obtém o canvas recortado com as dimensões desejadas
+                const canvas = cropper.getCroppedCanvas({
+                    width: 400, // Define uma largura padrão para a imagem de perfil
+                    height: 400,
+                });
+
+                // Converte o canvas para uma string Base64
+                const croppedImageDataURL = canvas.toDataURL('image/png');
+
+                // Coloca a string no input escondido
+                hiddenInput.value = croppedImageDataURL;
+
+                // Esconde o modal
+                modal.style.display = 'none';
+                
+                // Atualiza a imagem de preview na barra lateral
+                const profilePicSidebar = document.querySelector('.user-profile-sidebar .profile-pic img');
+                if(profilePicSidebar) profilePicSidebar.src = croppedImageDataURL;
+
+                // Atualiza a imagem de preview no header
+                const profilePicHeader = document.querySelector('.main-header .user-icon');
+                if(profilePicHeader) profilePicHeader.src = croppedImageDataURL;
+            }
+        });
+
+        // 3. Quando o usuário clica em "Cancelar"
+        cancelBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
     </script>
 </body>
 </html>

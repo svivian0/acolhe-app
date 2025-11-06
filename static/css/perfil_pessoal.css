@@ -242,3 +242,53 @@ body {
     }
 
 }
+
+/* --- Estilos para o Modal do Cropper (Design Integrado) --- */
+.cropper-modal-container {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.cropper-modal-content {
+    background-color: #f0f0f0; /* Mesma cor de fundo do content-box */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.cropper-modal-content h2 {
+    margin-top: 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.cropper-image-container {
+    margin: 20px 0;
+    height: 40vh; /* Altura relativa à tela para melhor responsividade */
+    max-height: 400px; /* Altura máxima */
+    background-color: #e0e0e0; /* Fundo para a área da imagem */
+}
+
+.cropper-image-container img {
+    max-width: 100%;
+}
+
+.cropper-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Espaçamento entre os botões */
+}

@@ -6,6 +6,8 @@ from werkzeug.utils import secure_filename
 from sqlalchemy import func
 import os
 import re # Importa o módulo de expressões regulares
+import base64 # Para decodificar a imagem recortada
+from io import BytesIO # Para manipular a imagem em memória
 
 app = Flask(__name__)
 
@@ -424,12 +426,33 @@ def perfil_pessoal():
                 perfil.sobremim = request.form.get('sobremim')
                 perfil.localizacao = request.form.get('localizacao')
 
-                if 'imagemperfil' in request.files:
+                # --- LÓGICA HÍBRIDA PARA UPLOAD DE IMAGEM ---
+                # 1. Prioriza a imagem recortada (enviada como Base64)
+                cropped_image_data = request.form.get('cropped_image')
+                if cropped_image_data:
+                    # Remove o cabeçalho 'data:image/png;base64,'
+                    try:
+                        header, encoded = cropped_image_data.split(",", 1)
+                        image_data = base64.b64decode(encoded)
+
+                        if perfil.imagemperfil and os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], perfil.imagemperfil)):
+                            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], perfil.imagemperfil))
+
+                        unique_filename = f"{current_user.id_usuario}_{secure_filename('profile.png')}"
+                        filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+                        
+                        with open(filepath, 'wb') as f:
+                            f.write(image_data)
+                        perfil.imagemperfil = unique_filename
+                    except (ValueError, TypeError):
+                        flash('Ocorreu um erro ao processar a imagem recortada.', 'danger')
+
+                # 2. Se não houver imagem recortada, usa o upload de arquivo tradicional
+                elif 'imagemperfil' in request.files:
                     file = request.files['imagemperfil']
                     if file.filename != '' and allowed_file(file.filename):
                         if perfil.imagemperfil and os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], perfil.imagemperfil)):
                             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], perfil.imagemperfil))
-
                         filename = secure_filename(file.filename)
                         unique_filename = f"{current_user.id_usuario}_{filename}"
                         file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
