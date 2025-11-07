@@ -352,11 +352,33 @@ def perfil_pessoal():
             estabelecimento.descricao = request.form.get('descricao')
             estabelecimento.link_instagram = request.form.get('link_instagram')
 
-            # Lógica de upload da imagem do estabelecimento
-            if 'imagemperfilestab' in request.files:
+            # --- LÓGICA HÍBRIDA PARA UPLOAD DE IMAGEM DE PERFIL DO ESTABELECIMENTO ---
+            # 1. Prioriza a imagem recortada (enviada como Base64)
+            cropped_image_data = request.form.get('cropped_image')
+            if cropped_image_data:
+                try:
+                    header, encoded = cropped_image_data.split(",", 1)
+                    image_data = base64.b64decode(encoded)
+
+                    if estabelecimento.imagemperfilestab and os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], estabelecimento.imagemperfilestab)):
+                        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], estabelecimento.imagemperfilestab))
+
+                    unique_filename = f"estab_{estabelecimento.id_estabelecimento}_{secure_filename('profile.png')}"
+                    filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+                    
+                    with open(filepath, 'wb') as f:
+                        f.write(image_data)
+                    estabelecimento.imagemperfilestab = unique_filename
+                except (ValueError, TypeError):
+                    flash('Ocorreu um erro ao processar a imagem recortada para o perfil do estabelecimento.', 'danger')
+
+            # 2. Se não houver imagem recortada, usa o upload de arquivo tradicional (se um novo arquivo foi enviado)
+            elif 'imagemperfilestab' in request.files:
                 file = request.files['imagemperfilestab']
                 if file.filename != '' and allowed_file(file.filename):
                     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+                    # Remove a imagem antiga apenas se uma nova imagem *não recortada* estiver sendo enviada
+                    # e se a imagem atual não for a que acabou de ser salva via cropper (para evitar exclusão dupla)
                     if estabelecimento.imagemperfilestab and os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], estabelecimento.imagemperfilestab)):
                         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], estabelecimento.imagemperfilestab))
                     

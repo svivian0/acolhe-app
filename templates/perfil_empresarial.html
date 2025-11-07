@@ -8,7 +8,61 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/acolhe_app_home_styles.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_empresarial.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_empresarial.css', v='1.1') }}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
+    <!-- Estilos In-line para garantir o funcionamento do Modal do Cropper -->
+    <style>
+        /* --- Estilos para o Modal do Cropper (Design Integrado) --- */
+        .cropper-modal-container {
+            display: none; /* Oculto por padrão */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .cropper-modal-content {
+            background-color: #f0f0f0; /* Mesma cor de fundo do content-box */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cropper-modal-content h2 {
+            margin-top: 0;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .cropper-image-container {
+            margin: 20px 0;
+            height: 40vh; /* Altura relativa à tela para melhor responsividade */
+            max-height: 400px; /* Altura máxima */
+            background-color: #e0e0e0; /* Fundo para a área da imagem */
+        }
+
+        .cropper-image-container img {
+            max-width: 100%;
+        }
+
+        .cropper-modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Espaçamento entre os botões */
+        }
+    </style>
 </head>
 <body>
     <!-- Header (reutilizado) -->
@@ -59,6 +113,8 @@
         <h1>Editar Perfil do Estabelecimento</h1>
 
         <form method="POST" action="{{ url_for('perfil_pessoal') }}" enctype="multipart/form-data" class="edit-form">
+            <!-- Input escondido para armazenar a imagem recortada em Base64 -->
+            <input type="hidden" name="cropped_image" id="cropped_image_data">
             
             <div class="form-section">
                 <div class="profile-pic-container">
@@ -176,6 +232,70 @@
                     userMenuButton.setAttribute('aria-expanded', 'false');
                 }
             }
+        });
+    </script>
+
+    <!-- Modal para o Cropper.js -->
+    <div id="cropper-modal" class="cropper-modal-container">
+        <div class="cropper-modal-content">
+            <h2>Ajuste a Foto de Perfil do Estabelecimento</h2>
+            <div class="cropper-image-container">
+                <img id="image-to-crop" src="" alt="Imagem para recortar">
+            </div>
+            <div class="cropper-modal-actions">
+                <button type="button" id="cancel-crop-btn" class="remove-button">Cancelar</button>
+                <button type="button" id="crop-and-save-btn" class="save-button">Salvar Foto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adicionando JS do Cropper.js via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+    <!-- Script para controlar o Cropper.js para o perfil empresarial -->
+    <script>
+        const modal = document.getElementById('cropper-modal');
+        const imageToCrop = document.getElementById('image-to-crop');
+        const fileInputEstab = document.getElementById('imagemperfilestab'); // ID específico para o input de arquivo do perfil empresarial
+        const cropAndSaveBtn = document.getElementById('crop-and-save-btn');
+        const cancelBtn = document.getElementById('cancel-crop-btn');
+        const hiddenInput = document.getElementById('cropped_image_data');
+        let cropper;
+
+        fileInputEstab.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    imageToCrop.src = reader.result;
+                    modal.style.display = 'flex';
+                    if (cropper) { cropper.destroy(); }
+                    cropper = new Cropper(imageToCrop, { aspectRatio: 1 / 1, viewMode: 1, background: false, autoCropArea: 0.8, responsive: true, movable: true, zoomable: true, rotatable: false, scalable: false, });
+                };
+                reader.readAsDataURL(files[0]);
+            }
+            e.target.value = '';
+        });
+
+        cropAndSaveBtn.addEventListener('click', () => {
+            if (cropper) {
+                const canvas = cropper.getCroppedCanvas({ width: 400, height: 400, });
+                const croppedImageDataURL = canvas.toDataURL('image/png');
+                hiddenInput.value = croppedImageDataURL;
+                modal.style.display = 'none';
+
+                // Atualiza a imagem de preview no formulário
+                const profilePicPreview = document.querySelector('.profile-pic-container .profile-pic');
+                if(profilePicPreview) profilePicPreview.src = croppedImageDataURL;
+
+                // Atualiza a imagem de preview no header
+                const profilePicHeader = document.querySelector('.main-header .user-icon');
+                if(profilePicHeader) profilePicHeader.src = croppedImageDataURL;
+            }
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
         });
     </script>
 </body>
