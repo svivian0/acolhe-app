@@ -33,15 +33,17 @@
 
         <!-- Container para a parte central do cabeçalho (pesquisa e ícones de usuário) -->
         <div class="header-center">
-            <!-- Barra de pesquisa -->
-            <div class="search-bar">
-                <!-- Ícone de lupa clicável (envolvido por um botão) -->
-                <button class="search-button">
-                    <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
-                </button>
-                <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
-                <input type="search" placeholder="Pesquisar">
-            </div>
+            <!-- Barra de pesquisa, agora dentro de um formulário -->
+            <form action="{{ url_for('comercio') }}" method="GET" class="header-search-form">
+                <div class="search-bar">
+                    <!-- Ícone de lupa clicável (envolvido por um botão) -->
+                    <button type="submit" class="search-button">
+                        <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
+                    </button>
+                    <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
+                    <input type="search" name="q" placeholder="Pesquisar estabelecimentos...">
+                </div>
+            </form>
 
             <!-- Container para os ícones de usuário -->
             <div class="header-right">

@@ -146,7 +146,13 @@ def Rota_html():
 @app.route('/home')
 @login_required # Protege a rota, só permite acesso se o usuário estiver logado
 def home():
-    return render_template('acolhe_app_home.html', titulo="Acolhe App", usuario=current_user)
+    # Busca até 5 estabelecimentos com imagem de perfil, ordenados pela maior avaliação
+    estabelecimentos_carrossel = Estabelecimento.query.filter(
+        Estabelecimento.imagemperfilestab.isnot(None),
+        Estabelecimento.imagemperfilestab != ''
+    ).order_by(Estabelecimento.media_avaliacao.desc()).limit(5).all()
+
+    return render_template('acolhe_app_home.html', titulo="Acolhe App", usuario=current_user, estabelecimentos_carrossel=estabelecimentos_carrossel)
 
 # Rota para a página de Login
 @app.route('/login', methods=['GET', 'POST'])

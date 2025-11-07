@@ -36,15 +36,17 @@
 
         <!-- Container para a parte central do cabeçalho (pesquisa e ícones de usuário) -->
         <div class="header-center"> 
-            <!-- Barra de pesquisa -->
-            <div class="search-bar">
-                <!-- Ícone de lupa clicável (envolvido por um botão) -->
-                <button class="search-button">
-                    <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
-                </button>
-                <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
-                <input type="search" placeholder="Pesquisar">
-            </div>
+            <!-- Barra de pesquisa, agora dentro de um formulário -->
+            <form action="{{ url_for('comercio') }}" method="GET" class="header-search-form">
+                <div class="search-bar">
+                    <!-- Ícone de lupa clicável (envolvido por um botão) -->
+                    <button type="submit" class="search-button">
+                        <img src="{{ url_for('static', filename='images/Lupa.png') }}" alt="Ícone de pesquisa" class="search-icon-img">
+                    </button>
+                    <!-- Campo de entrada para o usuário digitar o termo de pesquisa -->
+                    <input type="search" name="q" placeholder="Pesquisar estabelecimentos...">
+                </div>
+            </form>
 
             <!-- Container para os ícones de usuário -->
             <div class="header-right">
@@ -90,21 +92,24 @@
         <section class="image-slider-section">
             <div class="slider-container">
                 <!-- Wrapper que conterá todos os slides lado a lado -->
-                <div class="slides-wrapper">
-                    <!-- Imagens do carrossel -->
-                    <div class="slide">
-                        <img src="{{ url_for('static', filename='images/bakery.jpeg') }}" alt="" class="slide-bg">
-                        <img src="{{ url_for('static', filename='images/bakery.jpeg') }}" alt="Imagem de uma padaria" class="slide-fg">
-                    </div>
-                    <div class="slide">
-                        <img src="{{ url_for('static', filename='images/cafeshop.jpeg') }}" alt="" class="slide-bg">
-                        <img src="{{ url_for('static', filename='images/cafeshop.jpeg') }}" alt="Imagem de uma cafeteria" class="slide-fg">
-                    </div>
-                    <div class="slide">
-                        <img src="{{ url_for('static', filename='images/coffeshop.jpeg') }}" alt="" class="slide-bg">
-                        <img src="{{ url_for('static', filename='images/coffeshop.jpeg') }}" alt="Imagem de um restaurante" class="slide-fg">
-                    </div>
-                </div>
+                <div class="slides-wrapper"> 
+                    {% if estabelecimentos_carrossel %}
+                        {% for est in estabelecimentos_carrossel %}
+                            <a href="{{ url_for('perfil_estabelecimento', id=est.id_estabelecimento) }}" class="slide">
+                                {% set image_path = 'images/profile_pics/' + est.imagemperfilestab %}
+                                <img src="{{ url_for('static', filename=image_path) }}" alt="Imagem de fundo de {{ est.nome }}" class="slide-bg">
+                                <img src="{{ url_for('static', filename=image_path) }}" alt="Imagem de {{ est.nome }}" class="slide-fg">
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Slide padrão quando não há estabelecimentos com imagem -->
+                        <div class="slide">
+                            {% set placeholder_path = 'images/Imagemparavazio.png' %}
+                            <img src="{{ url_for('static', filename=placeholder_path) }}" alt="Imagem de fundo padrão" class="slide-bg">
+                            <img src="{{ url_for('static', filename=placeholder_path) }}" alt="Ainda não há estabelecimentos com imagem" class="slide-fg">
+                        </div>
+                    {% endif %}
+                </div> 
 
                 <!-- Indicadores de Navegação (Bolinhas) -->
                 <div class="slider-indicators"></div>
@@ -165,17 +170,20 @@
         const slidesWrapper = document.querySelector('.slides-wrapper');
         const slides = document.querySelectorAll('.slide');
         const indicatorsContainer = document.querySelector('.slider-indicators');
-        const totalSlides = slides.length;
+        const totalSlides = slides.length > 0 ? slides.length : 1;
         let currentSlideIndex = 0; // Índice do slide atualmente visível
         let slideInterval;
 
-        // Define a largura do wrapper dinamicamente com base no número de slides
-        slidesWrapper.style.width = `${totalSlides * 100}%`;
+        // Define a largura do wrapper dinamicamente para conter todos os slides
+        if (slides.length > 0) {
+            slidesWrapper.style.width = `${totalSlides * 100}%`;
+        }
 
         // Função para atualizar o indicador ativo (bolinha)
         function updateIndicators(activeIndex) {
             const dots = document.querySelectorAll('.indicator-dot');
             dots.forEach((dot, index) => {
+                dot.classList.remove('active'); // Limpa todos primeiro
                 if (index === activeIndex) {
                     dot.classList.add('active');
                 } else {
@@ -186,9 +194,8 @@
 
         // Função genérica para ir para um slide específico
         function goToSlide(slideIndex) {
-            // Calcula o deslocamento necessário para mover o wrapper
+            // Calcula o deslocamento. Cada slide tem 100% da largura do contêiner.
             const offset = -slideIndex * (100 / totalSlides);
-            // Aplica a transformação CSS para deslizar o wrapper
             slidesWrapper.style.transform = `translateX(${offset}%)`;
             currentSlideIndex = slideIndex;
             updateIndicators(currentSlideIndex);
@@ -210,16 +217,18 @@
         }
 
         // Cria os indicadores (bolinhas) dinamicamente
-        slides.forEach((_, index) => {
-            const dot = document.createElement('button');
-            dot.classList.add('indicator-dot');
-            dot.setAttribute('aria-label', `Ir para o slide ${index + 1}`);
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-                startSlideShow(); // Reinicia o timer ao clicar em uma bolinha
+        if (slides.length > 1) {
+            slides.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.classList.add('indicator-dot');
+                dot.setAttribute('aria-label', `Ir para o slide ${index + 1}`);
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                    startSlideShow(); // Reinicia o timer ao clicar em uma bolinha
+                });
+                indicatorsContainer.appendChild(dot);
             });
-            indicatorsContainer.appendChild(dot);
-        });
+        }
 
         // Inicia o carrossel automático quando a página carrega
         goToSlide(0); // Garante que o primeiro slide e indicador estejam ativos
