@@ -68,9 +68,11 @@
     <!-- Header (reutilizado) -->
     <header class="main-header">
         <div class="header-left">
-            <div class="logo-container">
-                <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="logo">
-            </div>
+            <div class="logo-container"> 
+                <a href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='images/Acolhe_icon.png') }}" alt="Logo Acolhe App" class="logo">
+                </a>
+            </div> 
             <nav class="main-nav">
                 <ul>
                     <li><a href="{{ url_for('home') }}">INÍCIO</a></li>
@@ -270,7 +272,7 @@
                     imageToCrop.src = reader.result;
                     modal.style.display = 'flex';
                     if (cropper) { cropper.destroy(); }
-                    cropper = new Cropper(imageToCrop, { aspectRatio: 1 / 1, viewMode: 1, background: false, autoCropArea: 0.8, responsive: true, movable: true, zoomable: true, rotatable: false, scalable: false, });
+                    cropper = new Cropper(imageToCrop, { aspectRatio: 16 / 9, viewMode: 1, background: false, autoCropArea: 0.8, responsive: true, movable: true, zoomable: true, rotatable: false, scalable: false, });
                 };
                 reader.readAsDataURL(files[0]);
             }
@@ -279,7 +281,7 @@
 
         cropAndSaveBtn.addEventListener('click', () => {
             if (cropper) {
-                const canvas = cropper.getCroppedCanvas({ width: 400, height: 400, });
+                const canvas = cropper.getCroppedCanvas({ width: 640, height: 360, }); // Proporção 16:9
                 const croppedImageDataURL = canvas.toDataURL('image/png');
                 hiddenInput.value = croppedImageDataURL;
                 modal.style.display = 'none';
