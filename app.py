@@ -210,6 +210,7 @@ def cadastro_html():
         senha_hashed = generate_password_hash(senha, method='pbkdf2:sha256')
         novo_usuario = Usuario(nome=nome, email=email, senha=senha_hashed, tipo_usuario=tipo_usuario)
         db.session.add(novo_usuario)
+        db.session.flush() # Garante que novo_usuario.id_usuario esteja disponível
 
         # Se for uma conta empresarial, coleta os dados e cria o estabelecimento
         if tipo_usuario == 'empresarial':
@@ -219,6 +220,7 @@ def cadastro_html():
 
             if not razao_social or not cnpj_bruto or not endereco:
                 flash('Para contas empresariais, Razão Social, CNPJ e Endereço são obrigatórios.', 'danger')
+                db.session.rollback() # Desfaz a criação do usuário se os detalhes empresariais estiverem faltando
                 return redirect(url_for('cadastro_html'))
 
             # --- FILTRO DO CNPJ ---
