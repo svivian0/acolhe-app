@@ -298,24 +298,3 @@
 
         cancelBtn.addEventListener('click', () => {
             modal.style.display = 'none';
-        });
-
-        // Script para formatar o Telefone
-        document.getElementById('telefone').addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
-
-            // Limita a 10 dígitos (DDD + 8 dígitos do telefone)
-            if (value.length > 10) {
-                value = value.slice(0, 10);
-            }
-
-            // Aplica a máscara (XX) XXXX-XXXX
-            value = value.replace(/^(\d{2})(\d)/, '($1) $2');
-            value = value.replace(/(\d{4})(\d{4})$/, '$1-$2');
-
-            e.target.value = value;
-        });
-
-    </script>
-</body>
-</html>

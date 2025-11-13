@@ -229,20 +229,6 @@ body {
     }
 }
 
-@media (max-width: 768px) {
-    .main-header {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
-    }
-
-    .header-left {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-}
-
 /* --- Estilos para o Modal do Cropper (Design Integrado) --- */
 .cropper-modal-container {
     display: none; /* Oculto por padrão */

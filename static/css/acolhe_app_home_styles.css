@@ -423,8 +423,16 @@ a {
     }
 
     .main-nav {
-        display: none; /* Esconde o menu de navegação principal */
-        /* Em um projeto real, o ícone de menu ativaria a exibição deste menu */
+        display: flex; /* Garante que o menu seja exibido */
+        order: 3; /* Coloca o menu abaixo dos outros itens */
+        width: 100%; /* Ocupa toda a largura */
+        justify-content: center; /* Centraliza os links */
+        margin-left: 0; /* Remove a margem esquerda */
+        padding-top: 10px; /* Adiciona um espaço acima */
+    }
+
+    .main-nav ul li:first-child {
+        display: none; /* Esconde o item "INÍCIO" no mobile */
     }
 
     .header-right {

@@ -22,7 +22,6 @@
  
             <!-- Seção de Navegação Principal. -->
             <nav class="main-nav">
-                <!-- Lista não ordenada que contém os links do menu -->
                 <ul>
                     <li><a href="{{ url_for('home') }}">INÍCIO</a></li>
                     <li><a href="{{ url_for('comercio') }}">COMÉRCIO</a></li>
@@ -85,7 +84,7 @@
     <main class="main-content">
         <!-- Hero Image Section -->
         <section class="hero-image">
-            <img style="width: 1100px; border-radius: 25px;" src="{{ url_for('static', filename='images/equipeacolhe.jpeg') }}">
+            <img src="{{ url_for('static', filename='images/equipeacolhe.jpeg') }}" alt="Equipe Acolhe App">
         </section>
 
         <!-- Cards Section -->
