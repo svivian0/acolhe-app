@@ -65,7 +65,7 @@
                         </div>
                         <div class="form-group">
                             <label for="cnpj">CNPJ</label>
-                            <input type="text" id="cnpj" name="cnpj">
+                            <input type="text" id="cnpj" name="cnpj" maxlength="18">
                         </div>
                         <div class="form-group">
                             <label for="endereco">Endereço</label>
@@ -102,6 +102,23 @@
                     input.required = false;
                 });
             }
+        });
+
+        // Script para formatar o CNPJ
+        document.getElementById('cnpj').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+
+            if (value.length > 14) {
+                value = value.slice(0, 14); // Limita a 14 dígitos
+            }
+
+            // Aplica a máscara de CNPJ
+            value = value.replace(/^(\d{2})(\d)/, '$1.$2'); // Coloca ponto entre o segundo e o terceiro dígitos
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3'); // Coloca ponto entre o quinto e o sexto dígitos
+            value = value.replace(/\.(\d{3})(\d)/, '.$1/$2'); // Coloca uma barra entre o oitavo e o nono dígitos
+            value = value.replace(/(\d{4})(\d)/, '$1-$2'); // Coloca um hífen depois do bloco de quatro dígitos
+
+            e.target.value = value;
         });
     </script>
 </body>

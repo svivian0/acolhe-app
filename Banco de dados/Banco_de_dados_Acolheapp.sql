@@ -41,7 +41,7 @@ CREATE TABLE estabelecimentos (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
 
-
+select * from estabelecimentos;
 
 CREATE TABLE categorias (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
