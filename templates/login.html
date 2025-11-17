@@ -31,9 +31,9 @@
                 <!-- Bloco para exibir mensagens flash -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">{{ message }}</div>
-                        {% endfor %}
+                        {# Pega apenas a última mensagem da lista para exibir #}
+                        {% set category, message = messages[-1] %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
                     {% endif %}
                 {% endwith %}
 
