@@ -195,10 +195,16 @@ def cadastro_html():
         email = request.form.get('email')
         senha = request.form.get('senha')
         tipo_usuario = request.form.get('tipo_usuario')
+        terms = request.form.get('terms') # Captura o valor do checkbox de termos
 
         # Tratamento de erro: verifica se todos os campos foram preenchidos
         if not nome or not email or not senha or not tipo_usuario:
             flash('Todos os campos são obrigatórios.', 'danger')
+            return redirect(url_for('cadastro_html'))
+
+        # Validação do aceite dos termos no backend
+        if not terms:
+            flash('Você deve aceitar os termos de uso e política de privacidade para se cadastrar.', 'danger')
             return redirect(url_for('cadastro_html'))
 
         # Verifica se o email já existe
