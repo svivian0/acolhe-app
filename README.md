@@ -7,3 +7,8 @@ Desenvolvido com o objetivo de oferecer suporte e recursos para pais e mães at�
 - **Comunidade de Apoio:** Um espaço para pais e mães compartilharem experiências e dicas.
 - **Encontro de Profissionais:** Auxilia a encontrar médicos e outros profissionais da área na sua região.
 - **Busca de Estabelecimentos:** Facilidade para encontrar estabelecimentos acolhedores.
+
+## Tech-Stack
+- **Back-end:** Python com Flask
+- **Front-end:** HTML, CSS e JavaScript puro
+- **Banco de dados:** MySQL com SQLAlchemy
