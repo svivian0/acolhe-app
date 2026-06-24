@@ -308,6 +308,10 @@ def comercio():
 def sobre_nos():
     return render_template('acolhe-app-sobre-nos.html', titulo="Sobre Nós")
 
+@app.route('/termos-de-uso')
+def termos_de_uso():
+    return render_template('termos_de_uso.html', titulo="Termos de Uso e Política de Privacidade")
+
 # Rota para a página de perfil do estabelecimento
 @app.route('/perfil-estabelecimento/<int:id>', methods=['GET', 'POST'])
 @login_required # Apenas usuários logados podem ver e avaliar

@@ -288,7 +288,7 @@
                 });
 
                 // Converte o canvas para uma string Base64
-                const croppedImageDataURL = canvas.toDataURL('image/png');
+                const croppedImageDataURL = canvas.toDataURL('image/jpeg', 0.7);
 
                 // Coloca a string no input escondido
                 hiddenInput.value = croppedImageDataURL;
